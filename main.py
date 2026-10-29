@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 # Conexão com o banco
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\BancoDados\TRABALHOATFIT.FDB'
+database = r'C:\Users\Aluno\Downloads\TRABALHOATFIT.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
