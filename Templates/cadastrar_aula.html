@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastrar Aula - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cadastrar_aula.css') }}">
+</head>
+
+<body>
+
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <main class="conteudo">
+
+        <div class="usuario">
+                <span>{{ session.get('usuario_nome', 'Administrador') }}</span>
+                <div class="icone-usuario">
+                    <span>
+                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
+                    </span>
+                </div>
+            </div>
+        <div class="formulario">
+
+            <h1>Cadastrar aula</h1>
+
+            <p class="subtitulo">
+                Preencha as informações para cadastrar uma nova aula.
+            </p>
+
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="mensagem {{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST"
+                  action="{{ url_for('cadastrar_aula') }}">
+
+                <!-- MODALIDADE -->
+                <div class="campo">
+                    <label for="modalidade">Modalidade</label>
+
+                    <select id="modalidade"
+                            name="modalidade"
+                            required>
+
+                        <option value="">Selecione uma modalidade</option>
+
+                        {% for modalidade in modalidades %}
+                            <option value="{{ modalidade[0] }}"
+                                {% if request.form.get('modalidade', '')|string == modalidade[0]|string %}
+                                    selected
+                                {% endif %}>
+                                {{ modalidade[1] }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <!-- PROFESSOR -->
+                <div class="campo">
+                    <label for="professor">Professor responsável</label>
+
+                    <select id="professor"
+                            name="professor"
+                            required>
+
+                        <option value="">Selecione um professor</option>
+
+                        {% for professor in professores %}
+                            <option value="{{ professor[0] }}"
+                                {% if request.form.get('professor', '')|string == professor[0]|string %}
+                                    selected
+                                {% endif %}>
+                                {{ professor[1] }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <!-- DIAS DA SEMANA -->
+                <div class="campo">
+                    <label>Dias da semana</label>
+
+                    <div class="dias-semana">
+
+                        {% set dias_selecionados = request.form.getlist('dias') %}
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="1"
+                                {% if '1' in dias_selecionados %}checked{% endif %}>
+                            Segunda-feira
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="2"
+                                {% if '2' in dias_selecionados %}checked{% endif %}>
+                            Terça-feira
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="3"
+                                {% if '3' in dias_selecionados %}checked{% endif %}>
+                            Quarta-feira
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="4"
+                                {% if '4' in dias_selecionados %}checked{% endif %}>
+                            Quinta-feira
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="5"
+                                {% if '5' in dias_selecionados %}checked{% endif %}>
+                            Sexta-feira
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="6"
+                                {% if '6' in dias_selecionados %}checked{% endif %}>
+                            Sábado
+                        </label>
+
+                        <label class="opcao-dia">
+                            <input type="checkbox" name="dias" value="7"
+                                {% if '7' in dias_selecionados %}checked{% endif %}>
+                            Domingo
+                        </label>
+
+                    </div>
+                </div>
+
+                <!-- HORÁRIOS -->
+                <div class="campo">
+                    <label for="hora_inicio">Horário de início</label>
+
+                    <input type="time"
+                           id="hora_inicio"
+                           name="hora_inicio"
+                           value="{{ request.form.get('hora_inicio', '') }}"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="hora_fim">Horário de término</label>
+
+                    <input type="time"
+                           id="hora_fim"
+                           name="hora_fim"
+                           value="{{ request.form.get('hora_fim', '') }}"
+                           required>
+                </div>
+
+                <!-- CAPACIDADE -->
+                <div class="campo">
+                    <label for="capacidade">Capacidade máxima de alunos</label>
+
+                    <input type="number"
+                           id="capacidade"
+                           name="capacidade"
+                           min="1"
+                           max="18"
+                           value="{{ request.form.get('capacidade', '') }}"
+                           placeholder="Ex: 18"
+                           required>
+                </div>
+
+                <button type="submit">
+                    CADASTRAR AULA
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

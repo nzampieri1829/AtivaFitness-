@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu Perfil - ATIVA Fitness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editarperfil.css') }}">
+</head>
+<body>
+
+    <!-- MENU LATERAL -->
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('editar_perfil') }}" class="ativo">Perfil</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO DA PÁGINA -->
+    <main class="conteudo">
+
+        <header class="cabecalho-mobile">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        </header>
+
+        <section class="cartao-perfil">
+
+            <h1>Meu Perfil</h1>
+
+            <!-- MENSAGENS -->
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                        <div class="mensagem {{ categoria }}">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- FORMULÁRIO -->
+            <form action="{{ url_for('editar_perfil') }}" method="POST">
+
+                <div class="campo">
+                    <label for="nome">Nome</label>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        placeholder="Digite seu nome"
+                        value="{{ nome }}"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Digite seu e-mail"
+                        value="{{ email }}"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Nova senha</label>
+                    <input
+                        type="password"
+                        id="senha"
+                        name="senha"
+                        placeholder="Digite uma nova senha"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="confirmar_senha">Confirmar nova senha</label>
+                    <input
+                        type="password"
+                        id="confirmar_senha"
+                        name="senha2"
+                        placeholder="Confirme a nova senha"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <button type="submit">Salvar alterações</button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- MENU INFERIOR PARA CELULAR -->
+    <nav class="menu-inferior">
+
+        <a href="{{ url_for('index') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="">
+            <span>Início</span>
+        </a>
+
+        <a href="{{ url_for('editar_perfil') }}" class="item-menu ativo">
+            <img src="{{ url_for('static', filename='img/icone_perfil.png') }}" alt="">
+            <span>Perfil</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="item-menu">
+            <img src="{{ url_for('static', filename='img/icone_sair.png') }}" alt="">
+            <span>Sair</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>

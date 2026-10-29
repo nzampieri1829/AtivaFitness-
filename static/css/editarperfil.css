@@ -1,0 +1,345 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+
+/* Biblioteca de cores */
+:root {
+    /* Cores principais */
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+
+    /* Cores neutras */
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+
+    /* Cores de mensagens */
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    color: var(--cinza-texto);
+    background: var(--branco);
+    min-height: 100vh;
+}
+
+/* MENU LATERAL IGUAL AO DASHBOARD */
+
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 205px;
+    height: 100vh;
+    padding: 25px 15px;
+    background: var(--verde-escuro);
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    margin-bottom: 26px;
+}
+
+.logo img {
+    width: 100px;
+    max-height: 55px;
+    object-fit: contain;
+}
+
+.menu-lateral nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-lateral nav a {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 9px 15px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+/* PERFIL FICA VERDE CLARO NESTA PÁGINA */
+
+.menu-lateral nav a.ativo {
+    background: var(--verde-principal);
+    border-color: var(--verde-principal);
+    font-weight: 700;
+}
+
+
+/* CONTEÚDO */
+
+.conteudo {
+    min-height: 100vh;
+    margin-left: 205px;
+    padding: 30px 25px;
+}
+
+.cabecalho-mobile {
+    display: none;
+}
+
+/* CARTÃO DO PERFIL */
+
+.cartao-perfil {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    min-height: 438px;
+    margin: 0 auto;
+    padding: 49px 27px 30px;
+    border: 1px solid #888888;
+    border-radius: 7px;
+}
+
+.cartao-perfil h1 {
+    margin-bottom: 34px;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* CAMPOS DO FORMULÁRIO */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 21px;
+}
+
+.campo label {
+    margin: 0 0 5px 2px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.campo input {
+    width: 100%;
+    height: 39px;
+    padding: 0 13px;
+    border: 1px solid #D6D6D6;
+    border-radius: 9px;
+    outline: none;
+    background: var(--branco);
+    color: var(--cinza-texto);
+    font-family: inherit;
+    font-size: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+
+
+.campo input::placeholder {
+    color: #888888;
+}
+
+/* BOTÃO */
+
+.cartao-perfil button {
+    display: block;
+    width: 48%;
+    min-height: 38px;
+    margin: 26px auto 0;
+    border: none;
+    border-radius: 7px;
+    background: var(--verde-principal);
+    color: var(--branco);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cartao-perfil button:hover {
+    background: var(--verde-escuro);
+}
+
+/* MENSAGENS */
+
+.mensagem {
+    margin: -15px 0 18px;
+    font-size: 12px;
+}
+
+.mensagem.sucesso {
+    color: var(--verde-escuro);
+}
+
+.mensagem.erro {
+    color: var(--erro);
+}
+
+/* MENU INFERIOR: CELULARES */
+
+.menu-inferior {
+    display: none;
+}
+
+@media (max-width: 600px) {
+
+    body {
+        min-height: 100vh;
+        padding-bottom: 55px;
+    }
+
+    .menu-lateral {
+        display: none;
+    }
+
+    .conteudo {
+        min-height: auto;
+        margin: 0;
+        padding: 0 12px 25px;
+    }
+
+    .cabecalho-mobile {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        margin: 0 -12px 25px;
+        padding: 5px 15px;
+        background: var(--verde-escuro);
+    }
+
+    .cabecalho-mobile img {
+        width: 65px;
+        height: 38px;
+        object-fit: contain;
+    }
+
+    .cartao-perfil {
+        width: 100%;
+        max-width: 425px;
+        min-height: 0;
+        margin: 0 auto;
+        padding: 22px 15px 25px;
+        border: 1px solid #8DB99A;
+        border-radius: 8px;
+    }
+
+    .usuario {
+        display: none;
+    }
+
+    .cartao-perfil h1 {
+        margin-bottom: 22px;
+        color: var(--preto);
+        font-size: 17px;
+    }
+
+    .campo {
+        margin-bottom: 20px;
+    }
+
+    .campo label {
+        margin-bottom: 5px;
+        font-size: 11px;
+    }
+
+    .campo input {
+        height: 36px;
+        padding: 0 10px;
+        font-size: 11px;
+        box-shadow: none;
+    }
+
+    .cartao-perfil button {
+        width: 80%;
+        max-width: 220px;
+        min-height: 35px;
+        margin: 25px auto 0;
+        font-size: 12px;
+    }
+
+    .mensagem {
+        margin: 0 0 15px;
+        font-size: 11px;
+    }
+
+    .menu-inferior {
+        position: fixed;
+        z-index: 10;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 55px;
+        padding: 3px 5px;
+        background: var(--verde-escuro);
+    }
+
+    .menu-inferior .item-menu {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2px;
+        height: 100%;
+        border-radius: 7px;
+        color: var(--branco);
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .menu-inferior .item-menu.ativo {
+        background: var(--verde-principal);
+    }
+
+    .item-menu img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+    }
+
+    .item-menu span {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 320px) {
+
+    .cartao-perfil {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .cartao-perfil h1 {
+        font-size: 15px;
+    }
+
+    .campo input {
+        font-size: 10px;
+    }
+
+    .menu-inferior .item-menu {
+        font-size: 8px;
+    }
+
+    .item-menu img {
+        width: 19px;
+        height: 19px;
+    }
+}

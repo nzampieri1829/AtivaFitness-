@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Início - ATIVA Fitness</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    </head>
+    <body>
+
+        <header class="cabecalho-mobile">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        </header>
+
+        <aside class="menu-lateral">
+
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+            </div>
+
+            <nav>
+                <a href="#" class="ativo">Início</a>
+                <a href="{{ url_for('editar_perfil') }}">Perfil</a>
+                <a href="{{ url_for('logout')}}">Sair</a>
+            </nav>
+
+        </aside>
+
+        <main class="conteudo">
+
+            <div class="painel">
+
+                <header class="cabecalho">
+
+                    <div class="usuario">
+                        <span>{{ nome }}</span>
+
+                        <div class="icone-usuario">
+                            <img src="{{ url_for('static', filename='img/img_perfil_nome.png') }}" alt="Usuário">
+                        </div>
+                    </div>
+
+                </header>
+
+                    <!-- Exibição das mensagens do Flask -->
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                    {% if mensagens %}
+                        {% for categoria, mensagem in mensagens %}
+                            <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <section class="boas-vindas">
+                    <h1>Olá, {{ nome }}!</h1>
+                    <p>É ótimo ter você conosco!</p>
+                </section>
+
+            </div>
+
+            </main>
+
+            <nav class="menu-inferior">
+
+                <a href="#" class="item-menu">
+                    <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="Início">
+                    <span>Início</span>
+                </a>
+
+                <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                    <img src="{{ url_for('static', filename='img/icone_perfil.png') }}" alt="Perfil">
+                    <span>Perfil</span>
+                </a>
+
+                <a href="#" class="item-menu">
+                    <img src="{{ url_for('static', filename='img/icone_grade.png') }}" alt="Grade de Aulas">
+                    <span>Grade de Aulas</span>
+                </a>
+
+                <a href="{{ url_for('logout')}}" class="item-menu">
+                    <img src="{{ url_for('static', filename='img/icone_sair.png') }}" alt="Sair">
+                    <span>Sair</span>
+                </a>
+
+            </nav>
+
+    </body>
+</html>

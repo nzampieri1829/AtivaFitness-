@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grade de Aulas - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
+</head>
+<body>
+
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu ativo">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="#" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <main class="conteudo">
+
+        <div class="painel">
+
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="mensagem {{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <div class="usuario">
+                <span>{{ session.get('usuario_nome', 'Administrador') }}</span>
+
+                <div class="icone-usuario">
+                    <span>
+                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt=""></span>
+                </div>
+            </div>
+
+            <section class="cabecalho">
+                <h1>Grade de aulas</h1>
+                <p>Consulte as aulas cadastradas na ATIVA Fitness.</p>
+            </section>
+
+            <div class="acoes">
+                <a href="{{ url_for('cadastrar_aula') }}"
+                   class="botao botao-principal">
+                    + Nova aula
+                </a>
+
+                <a href="{{ url_for('dashboard_admin') }}"
+                   class="botao">
+                    Voltar ao início
+                </a>
+            </div>
+
+            {% if aulas %}
+
+                <div class="tabela-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Modalidade</th>
+                                <th>Professor</th>
+                                <th>Dia</th>
+                                <th>Horário</th>
+                                <th>Capacidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for aula in aulas %}
+                                <tr>
+                                    <td>{{ aula[1] }}</td>
+                                    <td>{{ aula[2] }}</td>
+
+                                    <td>
+                                        {% if aula[4] %}
+                                            {{ dias_semana.get(aula[4], 'Não informado') }}
+                                        {% else %}
+                                            Não informado
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if aula[5] and aula[6] %}
+                                            {{ aula[5] }} às {{ aula[6] }}
+                                        {% else %}
+                                            Não informado
+                                        {% endif %}
+                                    </td>
+
+                                    <td>{{ aula[3] }} alunos</td>
+
+                                    <td class="acoes-tabela">
+                                        <a href=""
+                                           class="botao-acao editar">
+                                            Editar
+                                        </a>
+
+                                        <button type="button"
+                                                class="botao-acao excluir"
+                                                disabled>
+                                            Excluir
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="sem-aulas">
+                    <h2>Nenhuma aula cadastrada</h2>
+                    <p>Cadastre uma aula para que ela apareça nesta grade.</p>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</body>
+</html>

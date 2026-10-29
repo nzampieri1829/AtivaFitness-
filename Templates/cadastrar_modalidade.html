@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastrar Modalidade - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/cadastrar_modalidade.css') }}">
+</head>
+
+<body>
+
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="#" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+    <main class="conteudo">
+
+        <div class="usuario">
+            {{ session.get('usuario_nome', 'Administrador') }}
+
+            <div class="icone-usuario">
+                  <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt=""></span>
+            </div>
+        </div>
+
+        <div class="formulario">
+
+            <h1>Cadastrar modalidade</h1>
+
+            <p class="subtitulo">
+                Preencha as informações para cadastrar uma nova modalidade.
+            </p>
+
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="mensagem {{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST"
+                  action="{{ url_for('cadastrar_modalidade') }}">
+
+                <div class="campo">
+                    <label for="nome">Nome da modalidade</label>
+
+                    <input type="text"
+                           id="nome"
+                           name="nome"
+                           placeholder="Ex: Musculação"
+                           maxlength="100"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+
+                    <textarea id="descricao"
+                              name="descricao"
+                              placeholder="Descreva a modalidade"
+                              maxlength="150"
+                              rows="5"></textarea>
+                </div>
+
+                <button type="submit">
+                    CADASTRAR MODALIDADE
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

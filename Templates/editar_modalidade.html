@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Modalidade - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/editar_modalidade.css') }}">
+</head>
+
+<body>
+
+    <main class="conteudo">
+
+        <div class="painel">
+
+            <h1>Editar modalidade</h1>
+
+            <p class="subtitulo">
+                Altere as informações da modalidade selecionada.
+            </p>
+
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="mensagem {{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST">
+
+                <div class="campo">
+                    <label for="nome">Nome da modalidade</label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        value="{{ request.form.get('nome', modalidade[1]) }}"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        rows="4"
+                    >{{ request.form.get('descricao', modalidade[2] or '') }}</textarea>
+                </div>
+
+                <div class="botoes">
+                    <button type="submit" class="botao-salvar">
+                        Salvar alterações
+                    </button>
+
+                    <a href="{{ url_for('listar_modalidades') }}"
+                       class="botao-voltar">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

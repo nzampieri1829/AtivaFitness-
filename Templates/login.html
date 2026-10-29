@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ATIVA Fitness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+    <div class="pagina-login">
+
+        <div class="painel-imagem">
+
+            <img class="logo" src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+
+            <div class="frase-lateral">
+                <h1>Mais que Treino,<br>
+                    é sua <span>Melhor Versão!</span>
+                </h1>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_peso.png') }}" alt="Ícone de peso">
+
+                <div>
+                    <h3>Aulas Variadas</h3>
+                    <p>Para todos os níveis</p>
+                </div>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_profissionais.png') }}" alt="Ícone de profissionais">
+
+                <div>
+                    <h3>Profissionais Qualificados</h3>
+                    <p>Acompanhamento de perto</p>
+                </div>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_coracao.png') }}" alt="Ícone de coração">
+
+                <div>
+                    <h3>Mais Saúde e Bem-Estar</h3>
+                    <p>No seu ritmo</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="area-formulario">
+
+            <div class="cartao-login">
+
+                <div class="cabecalho-formulario">
+                    <h2>Entrar na sua Conta</h2>
+
+                    <p>Preencha seus dados para acessar
+                        a ATIVA Fitness.
+                    </p>
+                </div>
+
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                    {% if mensagens %}
+                        {% for categoria, mensagem in mensagens %}
+                            <p class="mensagem {{ categoria }}">
+                                {{ mensagem }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="#" method="post">
+
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_email.png') }}" alt="Ícone de e-mail">
+
+                            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_cadeado.png') }}" alt="Ícone de senha">
+
+                            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="botao-entrar">Entrar</button>
+
+                    <p class="cadastro">
+                        Não tem uma conta?
+                        <a href="{{ url_for('novo_usuario') }}">Cadastre-se</a>
+                    </p>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

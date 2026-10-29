@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta | ATIVA Fitness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/novousuario.css') }}">
+</head>
+
+<body>
+    <div class="pagina-cadastro">
+        <div class="lateral">
+            <img class="logo" src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+            <div class="frase-lateral">
+                <h1>Mais que Treino,<br>
+                    é sua <span>Melhor Versão!</span>
+                </h1>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_peso.png') }}" alt="Icone de peso">
+
+                <div>
+                    <h3>Aulas Variadas</h3>
+                    <p>Para todos os níveis</p>
+                </div>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_profissionais.png') }}" alt="Icone de profissionais">
+
+                <div>
+                    <h3>Profissionais Qualificados</h3>
+                    <p>Acompanhamento de perto</p>
+                </div>
+            </div>
+
+            <div class="item-informacao">
+                <img class="icone" src="{{ url_for('static', filename='img/img_coracao.png') }}" alt="Icone de coração">
+
+                <div>
+                    <h3>Mais Saúde e Bem-Estar</h3>
+                    <p>No seu ritmo</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="area-formulario">
+            <div class="caixa-cadastro">
+                <div class="link-login">
+                    <span>Já tem uma conta?</span>
+                    <a href="/login">Entrar</a>
+                </div>
+
+                <div class="cabecalho-formulario">
+                    <h2>Criar Conta</h2>
+
+                    <p>Preencha os dados abaixo para se cadastrar
+                        na ATIVA Fitness </p>
+                </div>
+
+                {% with mensagens = get_flashed_messages() %}
+                    {% if mensagens %}
+                        {% for mensagem in mensagens %}
+                            <p class="mensagem
+                                {% if 'sucesso' in mensagem|lower %}
+                                    sucesso
+                                {% else %}
+                                    erro
+                                {% endif %}">
+                                {{ mensagem }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="#" method="post">
+                    <div class="campo">
+                        <label for="nome">Nome completo</label>
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_perfil_nome.png') }}" alt="Icone de Perfil">
+
+                            <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" autocomplete="name" required>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_email.png') }}" alt="Icone de Email">
+
+                            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_cadeado.png') }}" alt="Icone de Senha">
+
+                            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="new-password" required>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="confirmar_senha">Confirmar senha</label>
+                        <div class="entrada">
+                            <img class="icone-campo" src="{{ url_for('static', filename='img/img_cadeado.png') }}" alt="Icone de Senha">
+
+                            <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" autocomplete="new-password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="botao-cadastrar">Cadastrar</button>
+
+                </form>
+
+                <div class="aviso">
+                    <p>Ao se cadastrar, você concorda com nossos</p>
+
+                    <p><a href="#">Termos de Uso</a>
+                        e
+                        <a href="#">Política de Privacidade</a>.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+
+/* ==============================
+   CORES DO ATIVA FITNESS
+============================== */
+
+:root {
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--cinza-claro);
+    color: var(--cinza-escuro);
+    min-height: 100vh;
+}
+
+/* ==============================
+   CONTEÚDO PRINCIPAL
+============================== */
+
+.conteudo {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 20px;
+}
+
+/* ==============================
+   PAINEL DO FORMULÁRIO
+============================== */
+
+.painel {
+    width: 100%;
+    max-width: 650px;
+    background-color: var(--branco);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* TÍTULO */
+
+.painel h1 {
+    color: var(--verde-escuro);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* SUBTÍTULO */
+
+.subtitulo {
+    color: var(--cinza-medio);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* ==============================
+   MENSAGENS DO FLASK
+============================== */
+
+.mensagem {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+
+.mensagem.sucesso {
+    background-color: #E8F5E9;
+    color: var(--sucesso);
+    border: 1px solid #A5D6A7;
+}
+
+.mensagem.erro {
+    background-color: #FDECEC;
+    color: var(--erro);
+    border: 1px solid #EF9A9A;
+}
+
+/* ==============================
+   CAMPOS DO FORMULÁRIO
+============================== */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.campo label {
+    color: var(--cinza-escuro);
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #D0D7D0;
+    border-radius: 8px;
+    background-color: var(--branco);
+    color: var(--preto);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* CAMPO DE TEXTO */
+
+.campo input {
+    height: 46px;
+}
+
+/* CAMPO DE DESCRIÇÃO */
+
+.campo textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* EFEITO AO SELECIONAR UM CAMPO */
+
+.campo input:focus,
+.campo textarea:focus {
+    border-color: var(--verde-principal);
+    box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.12);
+}
+
+/* ==============================
+   BOTÕES
+============================== */
+
+.botoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* BOTÃO SALVAR */
+
+.botao-salvar {
+    padding: 13px 22px;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    border: 1px solid var(--verde-principal);
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.botao-salvar:hover {
+    background-color: var(--verde-escuro);
+    border-color: var(--verde-escuro);
+}
+
+/* BOTÃO CANCELAR */
+
+.botao-voltar {
+    display: inline-block;
+    padding: 13px 22px;
+    background-color: var(--branco);
+    color: var(--cinza-escuro);
+    border: 1px solid #D0D7D0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.botao-voltar:hover {
+    background-color: var(--cinza-claro);
+}
+
+/* ==============================
+   RESPONSIVIDADE
+============================== */
+
+@media (max-width: 425px) {
+
+    .conteudo {
+        padding: 20px 12px;
+        align-items: flex-start;
+    }
+
+    .painel {
+        padding: 25px 18px;
+        border-radius: 12px;
+    }
+
+    .painel h1 {
+        font-size: 23px;
+    }
+
+    .subtitulo {
+        font-size: 14px;
+    }
+
+    .botoes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .botao-salvar,
+    .botao-voltar {
+        width: 100%;
+        text-align: center;
+    }
+}

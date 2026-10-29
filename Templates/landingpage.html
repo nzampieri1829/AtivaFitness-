@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ATIVA Fitness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage.css') }}">
+</head>
+<body>
+
+<!-- Parte principal -->
+    <div class="inicio">
+        <div class="fundo">
+            <!-- Menu -->
+            <header>
+                <a href="#" class="logo">
+                    <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+                </a>
+
+                <nav>
+                    <a href="#incio">Início</a>
+                    <a href="#beneficios">Benefício</a>
+                    <a href="#modalidades">Modalidades</a>
+                    <a href="#sobre">Sobre nós</a>
+                </nav>
+
+                <a href="/login" class="botao-entrar">ENTRAR</a>
+            </header>
+
+            <!-- Conteúdo principal -->
+             <div class="conteudo-inicio">
+                <div class="texto-inicio">
+                    <h1>Mais que treino,<br>
+                        é a sua melhor versão.
+                    </h1>
+
+                    <p>Encontre aulas, organize sua rotina e acompanhe
+                       suas inscrições em um só lugar.
+                    </p>
+
+                    <a href="/novo_usuario" class="botao-criar-conta">Criar conta</a>
+                </div>
+                <div class="caixa-inicio">
+                    <h2>Sua rotina começa aqui.</h2>
+
+                    <p class="texto-cb">Escolha uma modalidade, veja as vagas disponíveis e reserve a sua aula.</p>
+
+                    <p class="item">Aulas Variadas</p>
+                    <p class="item">Professores Qualificados</p>
+                    <p class="item">Vagas Organizadas</p>
+
+                </div>
+             </div>
+
+        </div>
+
+    </div>
+
+    <!-- Benefícios -->
+    <section class="beneficios" id="beneficios">
+        <h2>Treine do seu jeito.</h2>
+
+        <p class="subtitulo"> Tudo simples, organizado e pensado para sua rotina.</p>
+
+        <div class="cards-beneficios">
+            <div class="card-beneficio">
+                <span>01</span>
+
+                <h3>Aulas variadas</h3>
+
+                <p>Escolha entre Yoga, Spinning, Funcional, Dança e outras modalidades.</p>
+            </div>
+
+            <div class="card-beneficio-destaque">
+                <span>02</span>
+
+                <h3>Professores Qualificados</h3>
+
+                <p>Aulas com profissionais preparados para acompanhar você.</p>
+            </div>
+
+            <div class="card-beneficio">
+                <span>03</span>
+
+                <h3>Vagas Organizadas</h3>
+
+                <p>Consulte a capacidade e reserve sua vaga sem complicação.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modalidades -->
+    <section class="modalidades" id="modalidades">
+        <h2>Encontre sua modalidade</h2>
+
+        <p class="subtitulo">Opções para diferentes objetivos e níveis.</p>
+
+        <div class="cards-modalidades">
+
+            <!-- Card Yoga -->
+            <div class="card-modalidade">
+                <div class="titulo-card">
+                    <span>01</span>
+
+                    <div>
+                        <h3>Yoga</h3>
+
+                        <p>Equilíbrio e mobilidade</p>
+                    </div>
+                </div>
+                <img src="{{ url_for('static', filename='img/yoga.png') }}" alt="Aula de Yoga">
+
+            </div>
+
+            <!-- Card Spinning -->
+            <div class="card-modalidade-verde">
+                <div class="titulo-card">
+                    <span>02</span>
+
+                    <div>
+                        <h3>Spinning</h3>
+
+                        <p>Energia e resistência</p>
+                    </div>
+                </div>
+                <img src="{{ url_for('static', filename='img/spinning.png') }}" alt="Aula de Spinning">
+
+            </div>
+
+            <!-- Card Funcional -->
+            <div class="card-modalidade">
+                <div class="titulo-card">
+                    <span>03</span>
+
+                    <div>
+                        <h3>Funcional</h3>
+
+                        <p>Força para o dia a dia</p>
+                    </div>
+                </div>
+                <img src="{{ url_for('static', filename='img/funcional.png') }}" alt="Aula de Funcional">
+            </div>
+
+            <!-- Card Dança -->
+            <div class="card-modalidade-preto">
+                <div class="titulo-card">
+                    <span>04</span>
+
+                    <div>
+                        <h3>Dança</h3>
+
+                        <p>Movimento e diversão</p>
+                    </div>
+                </div>
+                <img src="{{ url_for('static', filename='img/danca.png') }}" alt="Aula de Dança">
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre nós -->
+    <section class="sobre" id="sobre">
+        <div class="texto-sobre">
+            <span class="pequeno-titulo">SOBRE NÓS</span>
+
+            <h2>Cuidar do corpo também é cuidar da mente.</h2>
+
+            <p>Na ATIVA Fitness, criamos um espaço para
+               pessoas de diferentes níveis encontrarem
+               atividades que combinam com seus objetivos
+               e sua rotina.</p>
+
+            <p>Contamos com professores qualificados, aulas
+               variadas e uma organização simples, para que
+               você possa consultar horários, verificar vagas
+               e se inscrever de forma prática.</p>
+        </div>
+        <div class="imagem-sobre">
+            <img src="{{ url_for('static', filename='img/sobrenos.png') }}" alt="Pessoa treinando na academia">
+
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div>
+            <h2>Pronto paracomeçar?</h2>
+
+            <p>Crie sua conta e encontre a sua aula.</p>
+        </div>
+
+        <a href="/novo_usuario" class="botao-footer">Criar conta</a>
+
+    </footer>
+
+</body>
+</html>

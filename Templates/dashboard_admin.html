@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard Administrativo - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard_admin.css') }}">
+</head>
+<body>
+
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="#" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+
+    <main class="conteudo">
+
+        <div class="painel">
+
+
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="mensagem {{ categoria }}">{{ mensagem }}</div>
+                {% endfor %}
+            {% endwith %}
+
+
+            <div class="usuario">
+                <span>{{ session.get('usuario_nome', 'Administrador') }}</span>
+
+                <div class="icone-usuario">
+                    <span>
+                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
+                    </span>
+                </div>
+            </div>
+
+            <section class="boas-vindas">
+                <h1>Olá, Administrador!</h1>
+                <p>Bem-Vindo ao painel administrativo da Ativa Fitness</p>
+            </section>
+
+            <section class="resumos">
+
+                <div class="card-resumo">
+                    <div class="icone-resumo">
+                        <img src="{{ url_for('static', filename='img/icone-alunos.png') }}" alt="">
+                    </div>
+                    <div>
+                        <h2>{{ total_alunos }}</h2>
+                        <p>Alunos</p>
+                    </div>
+                </div>
+
+                <div class="card-resumo">
+                    <div class="icone-resumo">
+                        <img src="{{ url_for('static', filename='img/icone-aulas-cadastradas.png') }}" alt="">
+
+                    </div>
+                    <div>
+                        <h2>{{ total_aulas }}</h2>
+                        <p>Aulas cadastradas</p>
+                    </div>
+                </div>
+
+                <div class="card-resumo">
+                    <div class="icone-resumo">
+                        <img src="{{ url_for('static', filename='img/icone-professores.png') }}" alt="">
+
+                    </div>
+                    <div>
+                        <h2>{{ total_professores }}</h2>
+                        <p>Professores</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="acesso-rapido">
+
+                <h2>Acesso rápido</h2>
+
+                <div class="botoes">
+
+                    <a href="{{ url_for('cadastrar_aula') }}" class="botao botao-principal">
+                        + Nova aula
+                    </a>
+
+                    <a href="#" class="botao">
+                        + Novo professor
+                    </a>
+
+                    <a href="{{ url_for('grade_de_aulas') }}" class="botao">
+                        Ver grade de aulas
+                    </a>
+
+                    <a href="#" class="botao">
+                        + Novo aluno
+                    </a>
+
+                    <a href="{{ url_for('cadastrar_modalidade') }}"
+                       class="botao botao-modalidade">
+                        + Nova modalidade
+                    </a>
+
+                    <a href="{{ url_for('listar_modalidades') }}"
+                       class="botao botao-modalidade">
+                        Ver modalidades
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

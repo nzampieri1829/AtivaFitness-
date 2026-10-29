@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* LOGIN */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Biblioteca de cores */
+:root {
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--branco);
+    color: var(--cinza-escuro);
+}
+
+/* Página */
+.pagina-login {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Parte esquerda */
+.painel-imagem {
+    width: 40%;
+    min-height: 100vh;
+    padding: 50px 30px 25px;
+
+    background-image:
+        linear-gradient(rgba(0, 65, 28, 0.55), rgba(0, 65, 28, 0.65)),
+        url("../img/fotopeso.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    align-self: center;
+}
+
+.frase-lateral {
+    margin-top: 65px;
+}
+
+.frase-lateral h1 {
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--branco);
+    font-weight: 700;
+}
+
+.frase-lateral span {
+    color: var(--verde-claro);
+}
+
+/* Informações e ícones */
+.item-informacao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0;
+}
+
+.frase-lateral + .item-informacao {
+    margin-top: 200px;
+}
+
+.item-informacao + .item-informacao {
+    margin-top: 35px;
+}
+
+.icone {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.item-informacao h3 {
+    font-size: 13px;
+    color: var(--branco);
+    margin-bottom: 3px;
+    font-weight: 700;
+}
+
+.item-informacao p {
+    font-size: 11px;
+    color: #D6D6D6;
+    line-height: 1.4;
+}
+
+/* Parte direita */
+.area-formulario {
+    width: 60%;
+    min-height: 100vh;
+    padding: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartao-login {
+    width: 100%;
+    max-width: 470px;
+    padding: 15px 40px 28px;
+
+    border: 2px solid var(--verde-claro);
+    border-radius: 11px;
+    background-color: var(--branco);
+}
+
+/* Título e descrição */
+.cabecalho-formulario {
+    margin-bottom: 22px;
+}
+
+.cabecalho-formulario h2 {
+    font-size: 25px;
+    color: var(--cinza-escuro);
+    margin-bottom: 4px;
+}
+
+.cabecalho-formulario p {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--cinza-medio);
+}
+
+/* Campos */
+.campo {
+    margin-bottom: 22px;
+}
+
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cinza-escuro);
+    margin-bottom: 6px;
+}
+
+.entrada {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 37px;
+    padding: 0 10px;
+
+    background-color: var(--cinza-claro);
+    border: 1px solid #D2D2D2;
+    border-radius: 11px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+.icone-campo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.entrada input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: var(--cinza-escuro);
+}
+
+/* Botão Entrar */
+.botao-entrar {
+    width: 100%;
+    height: 35px;
+    margin-top: 13px;
+
+    border: none;
+    border-radius: 10px;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.botao-entrar:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* Link para cadastro */
+.cadastro {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--cinza-medio);
+}
+
+.cadastro a {
+    margin-left: 4px;
+    color: var(--verde-principal);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cadastro a:hover {
+    color: var(--verde-escuro);
+}
+
+/* Mensagens */
+.mensagem {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mensagem.sucesso,
+.mensagem.success {
+    color: var(--sucesso);
+}
+
+.mensagem.erro,
+.mensagem.error {
+    color: var(--erro);
+}
+
+/* Celulares e telas menores */
+@media (max-width: 800px) {
+
+    .pagina-login {
+        flex-direction: column;
+    }
+
+    .painel-imagem {
+        width: 100%;
+        min-height: 420px;
+        padding: 30px 25px;
+        background-position: center;
+    }
+
+    .logo {
+        width: 115px;
+    }
+
+    .frase-lateral {
+        margin-top: 35px;
+        margin-bottom: 20px;
+    }
+
+    .frase-lateral h1 {
+        font-size: 22px;
+    }
+
+    .item-informacao {
+        margin-top: 12px;
+    }
+
+    .frase-lateral + .item-informacao {
+        margin-top: 12px;
+    }
+
+    .item-informacao + .item-informacao {
+        margin-top: 12px;
+    }
+
+    .area-formulario {
+        width: 100%;
+        min-height: auto;
+        padding: 30px 20px;
+    }
+
+    .cartao-login {
+        max-width: 470px;
+        padding: 20px 25px 25px;
+    }
+
+    .cadastro {
+        margin-top: 18px;
+    }
+}
+
+/* Celulares estreitos */
+@media (max-width: 380px) {
+
+    .area-formulario {
+        padding: 20px 12px;
+    }
+
+    .cartao-login {
+        padding: 18px;
+    }
+
+    .cabecalho-formulario h2 {
+        font-size: 22px;
+    }
+
+    .cabecalho-formulario p {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* NOVO USUÁRIO */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Biblioteca de cores */
+:root {
+    /* Cores principais */
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+
+    /* Cores neutras */
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+
+    /* Cores de mensagens */
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--branco);
+    color: var(--cinza-escuro);
+}
+
+.pagina-cadastro {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* Parte esquerda */
+.lateral {
+    width: 40%;
+    min-height: 100vh;
+    padding: 50px 30px 25px;
+    background-image:
+        linear-gradient(rgba(0, 65, 28, 0.55), rgba(0, 65, 28, 0.65)),
+        url("../img/fotopeso.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    align-self: center;
+}
+
+.frase-lateral {
+    margin-top: 65px;
+    margin-bottom: 0;
+}
+
+.frase-lateral h1 {
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--branco);
+    font-weight: 700;
+}
+
+.frase-lateral span {
+    color: var(--verde-principal);
+}
+
+/* Informações e ícones da lateral */
+.item-informacao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0;
+}
+
+/* Espaço entre a frase e o primeiro benefício */
+.frase-lateral + .item-informacao {
+    margin-top: 200px;
+}
+
+/* Espaçamento entre os benefícios */
+.item-informacao + .item-informacao {
+    margin-top: 35px;
+}
+
+.icone {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.item-informacao h3 {
+    font-size: 13px;
+    color: var(--branco);
+    margin-bottom: 3px;
+    font-weight: 700;
+}
+
+.item-informacao p {
+    font-size: 11px;
+    color: #D6D6D6;
+    line-height: 1.4;
+}
+
+/* Parte direita */
+.area-formulario {
+    width: 60%;
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.caixa-cadastro {
+    width: 100%;
+    max-width: 470px;
+    padding: 15px 40px 28px;
+    border: 2px solid var(--verde-claro);
+    border-radius: 11px;
+    background-color: var(--branco);
+}
+
+.link-login {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+    font-size: 12px;
+    color: var(--verde-claro);
+}
+
+.link-login a {
+    text-decoration: none;
+    color: var(--verde-principal);
+    font-weight: 700;
+}
+
+.cabecalho-formulario {
+    margin-bottom: 22px;
+}
+
+.cabecalho-formulario h2 {
+    font-size: 25px;
+    color: var(--cinza-escuro);
+    margin-bottom: 4px;
+}
+
+.cabecalho-formulario p {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--cinza-medio);
+}
+
+.campo {
+    margin-bottom: 22px;
+}
+
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cinza-escuro);
+    margin-bottom: 6px;
+}
+
+.entrada {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 37px;
+    padding: 0 10px;
+    background-color: var(--cinza-claro);
+    border: 1px solid #D2D2D2;
+    border-radius: 11px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+.icone-campo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.entrada input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: var(--cinza-escuro);
+}
+
+
+
+.botao-cadastrar {
+    width: 100%;
+    height: 35px;
+    margin-top: 35px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-cadastrar:hover {
+    background-color: var(--verde-escuro);
+}
+
+.aviso {
+    margin-top: 22px;
+    font-size: 10px;
+    line-height: 1.6;
+    color: var(--cinza-medio);
+}
+
+.aviso a {
+    color: var(--verde-claro);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.mensagem {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mensagem.sucesso {
+    color: var(--sucesso);
+}
+
+.mensagem.erro {
+    color: var(--erro);
+}
+
+
+/* Ajustes para celulares e telas menores */
+@media (max-width: 800px) {
+
+    /* Coloca uma parte abaixo da outra */
+    .pagina-cadastro {
+        flex-direction: column;
+    }
+
+    /* A lateral fica na parte superior */
+    .lateral {
+        width: 100%;
+        min-height: 420px;
+        padding: 30px 25px;
+        background-position: center;
+    }
+
+    /* Reduz a logo no celular */
+    .logo {
+        width: 115px;
+    }
+
+    /* Aproxima a frase da logo */
+    .frase-lateral {
+        margin-top: 35px;
+        margin-bottom: 20px;
+    }
+
+    .frase-lateral h1 {
+        font-size: 22px;
+    }
+
+    /* Aproxima os benefícios */
+    .item-informacao {
+        margin-top: 12px;
+    }
+
+    /* A área do formulário ocupa toda a largura */
+    .area-formulario {
+        width: 100%;
+        min-height: auto;
+        padding: 30px 20px;
+    }
+
+    /* Reduz o espaço interno do formulário */
+    .caixa-cadastro {
+        max-width: 470px;
+        padding: 20px 25px 25px;
+    }
+
+    .link-login {
+        margin-bottom: 25px;
+    }
+}
+
+/* Ajustes para celulares bem estreitos */
+@media (max-width: 380px) {
+
+    .area-formulario {
+        padding: 20px 12px;
+    }
+
+    .caixa-cadastro {
+        padding: 18px;
+    }
+
+    .cabecalho-formulario h2 {
+        font-size: 22px;
+    }
+
+    .cabecalho-formulario p {
+        font-size: 12px;
+    }
+}
+

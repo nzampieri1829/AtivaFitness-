@@ -1,0 +1,452 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--branco);
+    color: var(--cinza-escuro);
+}
+
+/* MENU LATERAL PADRÃO */
+.menu-lateral {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--verde-escuro);
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.logo {
+    width: 125px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 35px;
+    margin-right: 80px;
+}
+
+.menu-lateral nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.item-menu img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.item-menu:hover,
+.item-menu.ativo {
+    background-color: var(--verde-principal);
+    border-color: var(--verde-claro);
+}
+
+.sair {
+    margin-top: auto;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.conteudo {
+    margin-left: 260px;
+    min-height: 100vh;
+    padding: 30px 24px;
+    position: relative;
+}
+
+.conteudo::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 90px solid var(--verde-claro);
+    border-left: 80px solid transparent;
+}
+
+/* USUÁRIO */
+.usuario {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    color: var(--verde-escuro);
+    font-weight: bold;
+    margin-bottom: 25px;
+    margin-right: 60px;
+}
+
+.icone-usuario {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--verde-claro);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--preto);
+    font-size: 25px;
+    background-color: var(--branco);
+}
+
+.icone-usuario img{
+    width:30px;
+    height:21px;
+}
+
+/* FORMULÁRIO */
+.formulario {
+    max-width: 1000px;
+    min-height: 650px;
+    border: 2px solid var(--cinza-medio);
+    border-radius: 12px;
+    padding: 70px 42px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background-color: var(--branco);
+}
+
+.formulario h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.subtitulo {
+    color: var(--cinza-medio);
+    font-size: 16px;
+    margin-bottom: 35px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+label {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 17px 20px;
+    border: 1px solid #CCCCCC;
+    border-radius: 11px;
+    background-color: var(--cinza-claro);
+    color: var(--cinza-escuro);
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 0 2px 3px var(--cinza-claro);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--cinza-medio);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+
+
+/* BOTÃO CADASTRAR */
+.formulario button {
+    display: block;
+    width: 55%;
+    margin: 55px auto 0;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 4px #CCCCCC;
+}
+
+.formulario button:hover {
+    background-color: var(--verde-escuro);
+}
+
+
+/* MENSAGENS DO FLASK */
+.mensagem {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    animation: aparecer 0.3s ease-in-out;
+}
+
+/* MENSAGEM DE SUCESSO */
+.mensagem.sucesso {
+    background-color: #E8F5E9;
+    color: #17652A;
+    border: 1px solid #A5D6A7;
+}
+
+.mensagem.sucesso::before {
+    content: "✓";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #238636;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* MENSAGEM DE ERRO */
+.mensagem.erro {
+    background-color: #FFEBEE;
+    color: #B71C1C;
+    border: 1px solid #FFCDD2;
+}
+
+.mensagem.erro::before {
+    content: "!";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #D32F2F;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* ANIMAÇÃO */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    .mensagem {
+        padding: 12px;
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+}
+
+
+/* RESPONSIVIDADE */
+@media (max-width: 1000px) {
+    .menu-lateral {
+        width: 220px;
+    }
+
+    .conteudo {
+        margin-left: 220px;
+        padding: 20px 15px;
+    }
+
+    .formulario {
+        padding: 55px 28px;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu-lateral {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        position: relative;
+        padding: 15px;
+    }
+
+    .logo {
+        width: 95px;
+        margin-bottom: 18px;
+    }
+
+    .menu-lateral nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .item-menu {
+        justify-content: center;
+        padding: 10px 6px;
+        font-size: 12px;
+        gap: 7px;
+    }
+
+    .item-menu img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sair {
+        margin-top: 8px;
+    }
+
+    .conteudo {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .conteudo::after {
+        border-top-width: 55px;
+        border-left-width: 50px;
+    }
+
+    .usuario {
+        margin-bottom: 20px;
+    }
+
+    .formulario {
+        min-height: auto;
+        padding: 30px 18px;
+    }
+
+    .formulario h1 {
+        font-size: 25px;
+    }
+
+    .subtitulo {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    label {
+        font-size: 15px;
+    }
+
+    input,
+    textarea {
+        padding: 13px;
+    }
+
+    .formulario button {
+        width: 100%;
+        font-size: 18px;
+        margin-top: 35px;
+    }
+}
+
+
+/* CAMPOS DE SELEÇÃO */
+select {
+    width: 100%;
+    padding: 17px 20px;
+    border: 1px solid #CCCCCC;
+    border-radius: 11px;
+    background-color: var(--cinza-claro);
+    color: var(--cinza-escuro);
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 0 2px 3px var(--cinza-claro);
+}
+
+/* DIAS DA SEMANA */
+.dias-semana {
+    display: ruby;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid #CCCCCC;
+    border-radius: 11px;
+    background-color: var(--cinza-claro);
+
+}
+
+.dias-semana .opcao-dia {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.dias-semana input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: var(--verde-principal);
+    box-shadow: none;
+    cursor: pointer;
+}
+
+/* RESPONSIVIDADE DOS DIAS */
+@media (max-width: 600px) {
+    .dias-semana {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    select {
+        padding: 13px;
+    }
+}

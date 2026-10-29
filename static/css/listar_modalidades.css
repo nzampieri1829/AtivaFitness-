@@ -1,0 +1,461 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+    --preto: #111111;
+    --sucesso: #2E7D32;
+    --erro: #D32F2F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cinza-claro);
+    color: var(--preto);
+}
+
+
+/* MENU LATERAL — PADRÃO DO DASHBOARD */
+.menu-lateral {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--verde-escuro);
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+/* LOGO */
+.logo {
+    width: 125px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 35px;
+    margin-right: 80px;
+}
+
+/* NAVEGAÇÃO */
+.menu-lateral nav,
+.navegacao {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* BOTÕES DO MENU */
+.item-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+/* ÍCONES */
+.item-menu img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* EFEITO AO PASSAR O MOUSE */
+.item-menu:hover,
+.item-menu.ativo {
+    background-color: var(--verde-principal);
+    border-color: var(--verde-claro);
+}
+
+/* BOTÃO SAIR */
+.sair {
+    margin-top: auto;
+}
+
+
+/* CONTEÚDO PRINCIPAL */
+.conteudo {
+    margin-left: 260px;
+    padding: 35px;
+    min-height: 100vh;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 35px;
+    color: var(--cinza-escuro);
+    font-weight: 600;
+}
+
+.icone-usuario {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--verde-claro);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--preto);
+    font-size: 25px;
+    background-color: var(--branco);
+}
+
+.icone-usuario img{
+    width:30px;
+    height:21px;
+}
+
+/* PAINEL */
+.painel {
+    background-color: var(--branco);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(17, 17, 17, 0.05);
+}
+
+h1 {
+    color: var(--verde-escuro);
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    color: var(--cinza-medio);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* BOTÃO CADASTRAR */
+.botao-cadastrar {
+    display: inline-block;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    transition: background-color 0.2s;
+}
+
+.botao-cadastrar:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* TABELA DE MODALIDADES */
+.tabela-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th,
+td {
+    padding: 16px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--cinza-claro);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+th {
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    font-weight: 700;
+}
+
+tbody tr {
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: var(--cinza-claro);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* STATUS DAS MODALIDADES */
+.status {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status.ativo {
+    background-color: #E8F5E9;
+    color: var(--sucesso);
+}
+
+.status.inativo {
+    background-color: #FFEBEE;
+    color: var(--erro);
+}
+
+/* LISTA VAZIA */
+.vazio {
+    padding: 35px 15px;
+    text-align: center;
+    border: 1px dashed var(--cinza-medio);
+    border-radius: 10px;
+}
+
+.vazio h2 {
+    color: var(--verde-escuro);
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.vazio p {
+    color: var(--cinza-medio);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* MENSAGENS DO FLASK NO DASHBOARD */
+.mensagem {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    animation: aparecer 0.3s ease-in-out;
+}
+
+/* MENSAGEM DE SUCESSO */
+.mensagem.sucesso {
+    background-color: #E8F5E9;
+    color: #17652A;
+    border: 1px solid #A5D6A7;
+}
+
+.mensagem.sucesso::before {
+    content: "✓";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #238636;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* MENSAGEM DE ERRO */
+.mensagem.erro {
+    background-color: #FFEBEE;
+    color: #B71C1C;
+    border: 1px solid #FFCDD2;
+}
+
+.mensagem.erro::before {
+    content: "!";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #D32F2F;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* ANIMAÇÃO SUAVE */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* AÇÕES DA TABELA */
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* FORMULÁRIO DO BOTÃO EXCLUIR */
+.acoes form {
+    margin: 0;
+}
+
+/* BOTÃO EDITAR */
+.botao-editar {
+    display: inline-block;
+    padding: 8px 14px;
+    background-color: var(--verde-principal);
+    color: var(--branco);
+    text-decoration: none;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-editar:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* BOTÃO EXCLUIR */
+.botao-excluir {
+    padding: 8px 14px;
+    background-color: var(--erro);
+    color: var(--branco);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-excluir:hover {
+    background-color: #B71C1C;
+}
+
+
+/* TABLETS */
+@media (max-width: 1000px) {
+    .menu-lateral {
+        width: 220px;
+        padding: 25px 15px;
+    }
+
+    .conteudo {
+        margin-left: 220px;
+        padding: 25px;
+    }
+
+    .painel {
+        padding: 22px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    .menu-lateral {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        position: relative;
+        padding: 15px;
+    }
+
+    .logo {
+        margin-bottom: 18px;
+    }
+
+    .logo img {
+        width: 120px;
+    }
+
+    .navegacao {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .item-menu {
+        gap: 8px;
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .item-menu img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sair {
+        margin-top: 8px;
+    }
+
+    .conteudo {
+        margin-left: 0;
+        padding: 18px 12px;
+    }
+
+    .usuario {
+        margin-bottom: 20px;
+    }
+
+    .painel {
+        padding: 18px 12px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .subtitulo {
+        font-size: 13px;
+    }
+
+    .botao-cadastrar {
+        display: block;
+        text-align: center;
+    }
+
+    th,
+    td {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+
+    .vazio {
+        padding: 25px 12px;
+    }
+}
