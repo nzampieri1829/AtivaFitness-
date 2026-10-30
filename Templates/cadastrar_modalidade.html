@@ -34,7 +34,7 @@
                 <span>Grade de aulas</span>
             </a>
 
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
                 <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
                      alt="">
                 <span>Perfil</span>
@@ -58,9 +58,7 @@
         <div class="usuario">
             {{ session.get('usuario_nome', 'Administrador') }}
 
-            <div class="icone-usuario">
-                  <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt=""></span>
-            </div>
+            <div class="icone-usuario">#</div>
         </div>
 
         <div class="formulario">

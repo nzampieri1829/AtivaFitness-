@@ -140,7 +140,7 @@ body {
 
 .campo textarea {
     min-height: 120px;
-    resize: vertical;
+    resize: none;
     line-height: 1.5;
 }
 

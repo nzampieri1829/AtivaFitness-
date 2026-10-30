@@ -33,7 +33,7 @@
                 <span>Grade de aulas</span>
             </a>
 
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
                 <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
                      alt="">
                 <span>Perfil</span>
@@ -70,7 +70,7 @@
 
                 <div class="icone-usuario">
                     <span>
-                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
+                           <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
                     </span>
                 </div>
             </div>
@@ -95,7 +95,6 @@
                 <div class="card-resumo">
                     <div class="icone-resumo">
                         <img src="{{ url_for('static', filename='img/icone-aulas-cadastradas.png') }}" alt="">
-
                     </div>
                     <div>
                         <h2>{{ total_aulas }}</h2>
@@ -106,7 +105,6 @@
                 <div class="card-resumo">
                     <div class="icone-resumo">
                         <img src="{{ url_for('static', filename='img/icone-professores.png') }}" alt="">
-
                     </div>
                     <div>
                         <h2>{{ total_professores }}</h2>

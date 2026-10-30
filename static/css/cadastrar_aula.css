@@ -115,25 +115,20 @@ body {
     color: var(--verde-escuro);
     font-weight: bold;
     margin-bottom: 25px;
-    margin-right: 60px;
+    margin-right: 65px;
 }
 
 .icone-usuario {
-    width: 35px;
-    height: 35px;
     border: 2px solid var(--verde-claro);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--preto);
-    font-size: 25px;
-    background-color: var(--branco);
+    border-radius: 7px;
+    padding: 0px 3px;
+    font-size: 19px;
 }
 
 .icone-usuario img{
-    width:30px;
-    height:21px;
+    width: 26px;
+    height: 24px;
+    border-radius: 90px;
 }
 
 /* FORMULÁRIO */
@@ -194,8 +189,6 @@ textarea {
     resize: vertical;
     min-height: 140px;
 }
-
-
 
 /* BOTÃO CADASTRAR */
 .formulario button {
@@ -287,6 +280,29 @@ textarea {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+
+.botao-cancelar {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: var(--cinza-medio);
+    color: var(--branco);
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 400px;
+    margin-top: 20px;
+}
+
+.botao-cancelar:hover {
+    background-color: var(--cinza-escuro);
 }
 
 /* CELULARES */
@@ -411,13 +427,13 @@ select {
 
 /* DIAS DA SEMANA */
 .dias-semana {
-    display: ruby;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     padding: 18px;
     border: 1px solid #CCCCCC;
     border-radius: 11px;
     background-color: var(--cinza-claro);
-
 }
 
 .dias-semana .opcao-dia {

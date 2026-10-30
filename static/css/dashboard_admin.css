@@ -156,10 +156,9 @@ body {
 }
 
 .icone-usuario img{
-    width:30px;
-    height:21px;
+    width: 30px;
+    height: 21px;
 }
-
 /* SAUDAÇÃO */
 .boas-vindas {
     position: relative;
@@ -212,10 +211,9 @@ body {
 }
 
 .icone-resumo img{
-    width: 30px;
-    height:30px;
+    width:28px;
+    height: 28px;
 }
-
 
 .card-resumo h2 {
     font-size: 25px;

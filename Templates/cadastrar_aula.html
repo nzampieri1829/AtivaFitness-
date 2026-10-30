@@ -56,13 +56,12 @@
     <main class="conteudo">
 
         <div class="usuario">
-                <span>{{ session.get('usuario_nome', 'Administrador') }}</span>
-                <div class="icone-usuario">
-                    <span>
-                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
-                    </span>
-                </div>
+            {{ session.get('usuario_nome', 'Administrador') }}
+            <div class="icone-usuario">
+                <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt="">
             </div>
+        </div>
+
         <div class="formulario">
 
             <h1>Cadastrar aula</h1>

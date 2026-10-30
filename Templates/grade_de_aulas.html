@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,11 +7,12 @@
 
     <title>Grade de Aulas - ATIVA Fitness</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/grade_de_aulas.css') }}">
 </head>
+
 <body>
 
+    <!-- MENU LATERAL -->
     <aside class="menu-lateral">
 
         <div class="logo">
@@ -18,144 +20,119 @@
                  alt="Logo ATIVA Fitness">
         </div>
 
-        <nav class="navegacao">
-
+        <nav>
             <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
                 <img src="{{ url_for('static', filename='img/icone_home.png') }}"
                      alt="">
-                <span>Início</span>
+                Início
             </a>
 
             <a href="{{ url_for('grade_de_aulas') }}" class="item-menu ativo">
                 <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
                      alt="">
-                <span>Grade de aulas</span>
+                Grade de Aulas
             </a>
 
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
                 <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
                      alt="">
-                <span>Perfil</span>
+                Perfil
             </a>
 
-        </nav>
-
-        <div class="sair">
-            <a href="{{ url_for('logout') }}" class="item-menu">
+            <a href="{{ url_for('logout') }}" class="item-menu sair">
                 <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
                      alt="">
-                <span>Sair</span>
+                Sair
             </a>
-        </div>
+        </nav>
 
     </aside>
 
-    <main class="conteudo">
 
-        <div class="painel">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo-principal">
 
-            {% with mensagens = get_flashed_messages(with_categories=true) %}
-                {% for categoria, mensagem in mensagens %}
-                    <div class="mensagem {{ categoria }}">
-                        {{ mensagem }}
-                    </div>
-                {% endfor %}
-            {% endwith %}
-
-            <div class="usuario">
-                <span>{{ session.get('usuario_nome', 'Administrador') }}</span>
-
-                <div class="icone-usuario">
-                    <span>
-                        <img src="{{ url_for('static', filename='img/icone-perfil.png') }}" alt=""></span>
-                </div>
+        <div class="cabecalho-pagina">
+            <div>
+                <h1>Grade de Aulas</h1>
+                <p class="descricao-pagina">
+                    Confira as aulas cadastradas na academia.
+                </p>
             </div>
 
-            <section class="cabecalho">
-                <h1>Grade de aulas</h1>
-                <p>Consulte as aulas cadastradas na ATIVA Fitness.</p>
-            </section>
+            <a href="{{ url_for('cadastrar_aula') }}" class="botao-nova-aula">
+                + Nova aula
+            </a>
+        </div>
 
-            <div class="acoes">
-                <a href="{{ url_for('cadastrar_aula') }}"
-                   class="botao botao-principal">
-                    + Nova aula
-                </a>
+        <!-- TABELA DE AULAS -->
+        <div class="tabela-container">
 
-                <a href="{{ url_for('dashboard_admin') }}"
-                   class="botao">
-                    Voltar ao início
-                </a>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modalidade</th>
+                        <th>Professor</th>
+                        <th>Dia da semana</th>
+                        <th>Horário de início</th>
+                        <th>Horário de término</th>
+                        <th>Capacidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
 
-            {% if aulas %}
+                <tbody>
+                    {% for aula in aulas %}
+                    <tr>
+                        <td>{{ aula[1] }}</td>
+                        <td>{{ aula[2] }}</td>
 
-                <div class="tabela-container">
+                        <!-- A rota já converteu o dia para inteiro -->
+                        <td>{{ dias_semana.get(aula[4], 'Não informado') }}</td>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Modalidade</th>
-                                <th>Professor</th>
-                                <th>Dia</th>
-                                <th>Horário</th>
-                                <th>Capacidade</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
+                        <td>{{ aula[5] }}</td>
+                        <td>{{ aula[6] }}</td>
+                        <td>{{ aula[3] }} alunos</td>
 
-                        <tbody>
-                            {% for aula in aulas %}
-                                <tr>
-                                    <td>{{ aula[1] }}</td>
-                                    <td>{{ aula[2] }}</td>
+                        <td class="acoes-tabela">
+                            <div class="botoes-acoes">
 
-                                    <td>
-                                        {% if aula[4] %}
-                                            {{ dias_semana.get(aula[4], 'Não informado') }}
-                                        {% else %}
-                                            Não informado
-                                        {% endif %}
-                                    </td>
+                                <a href="{{ url_for('editar_aula', id_aula=aula[0]) }}"
+                                   class="botao-acao editar">
+                                    Editar
+                                </a>
 
-                                    <td>
-                                        {% if aula[5] and aula[6] %}
-                                            {{ aula[5] }} às {{ aula[6] }}
-                                        {% else %}
-                                            Não informado
-                                        {% endif %}
-                                    </td>
+                                <form method="POST"
+                                      action="{{ url_for('excluir_aula', id_aula=aula[0]) }}"
+                                      onsubmit="return confirm('Tem certeza de que deseja excluir esta aula?');">
 
-                                    <td>{{ aula[3] }} alunos</td>
+                                    <button type="submit" class="botao-acao excluir">
+                                        Excluir
+                                    </button>
 
-                                    <td class="acoes-tabela">
-                                        <a href=""
-                                           class="botao-acao editar">
-                                            Editar
-                                        </a>
+                                </form>
 
-                                        <button type="button"
-                                                class="botao-acao excluir"
-                                                disabled>
-                                            Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </div>
+                        </td>
+                    </tr>
 
-                </div>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="sem-aulas">
+                            Nenhuma aula cadastrada.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-            {% else %}
+        </div>
 
-                <div class="sem-aulas">
-                    <h2>Nenhuma aula cadastrada</h2>
-                    <p>Cadastre uma aula para que ela apareça nesta grade.</p>
-                </div>
-
-            {% endif %}
-
+        <!-- VOLTAR AO INÍCIO -->
+        <div class="voltar-container">
+            <a href="{{ url_for('dashboard_admin') }}" class="botao-voltar">
+                Voltar ao início
+            </a>
         </div>
 
     </main>

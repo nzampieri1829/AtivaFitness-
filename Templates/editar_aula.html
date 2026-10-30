@@ -5,23 +5,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Editar aula - ATIVA Fitness</title>
+    <title>Editar Aula - ATIVA Fitness</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/editar_aula.css') }}">
+          href="{{ url_for('static', filename='css/cadastrar_aula.css') }}">
 </head>
 
 <body>
 
+    <aside class="menu-lateral">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}" alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}" alt="">
+                <span>Perfil</span>
+            </a>
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}" alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+
     <main class="conteudo">
+        <div class="usuario">
+            {{ session.get('usuario_nome', 'Administrador') }}
+            <div class="icone-usuario">#</div>
+        </div>
 
-        <div class="painel">
-
-            <h1>Editar modalidade</h1>
+        <div class="formulario">
+            <h1>Editar aula</h1>
 
             <p class="subtitulo">
-                Altere as informações da modalidade selecionada.
+                Altere as informações da aula abaixo.
             </p>
 
             {% with mensagens = get_flashed_messages(with_categories=true) %}
@@ -32,46 +65,106 @@
                 {% endfor %}
             {% endwith %}
 
-            <form method="POST">
+            <form method="POST"
+                  action="{{ url_for('editar_aula', id_aula=aula[0]) }}">
 
                 <div class="campo">
-                    <label for="nome">Nome da modalidade</label>
+                    <label for="modalidade">Modalidade</label>
 
-                    <input
-                        type="text"
-                        id="nome"
-                        name="nome"
-                        value="{{ request.form.get('nome', modalidade[1]) }}"
-                        maxlength="100"
-                        required
-                    >
+                    <select id="modalidade" name="modalidade" required>
+                        <option value="">Selecione uma modalidade</option>
+
+                        {% for modalidade in modalidades %}
+                            <option value="{{ modalidade[0] }}"
+                                {% if dados.modalidade|string == modalidade[0]|string %}
+                                    selected
+                                {% endif %}>
+                                {{ modalidade[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="campo">
-                    <label for="descricao">Descrição</label>
+                    <label for="professor">Professor responsável</label>
 
-                    <textarea
-                        id="descricao"
-                        name="descricao"
-                        rows="4"
-                    >{{ request.form.get('descricao', modalidade[2] or '') }}</textarea>
+                    <select id="professor" name="professor" required>
+                        <option value="">Selecione um professor</option>
+
+                        {% for professor in professores %}
+                            <option value="{{ professor[0] }}"
+                                {% if dados.professor|string == professor[0]|string %}
+                                    selected
+                                {% endif %}>
+                                {{ professor[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
                 </div>
 
-                <div class="botoes">
-                    <button type="submit" class="botao-salvar">
-                        Salvar alterações
-                    </button>
+                <div class="campo">
+                    <label>Dias da semana</label>
 
-                    <a href="{{ url_for('listar_modalidades') }}"
-                       class="botao-voltar">
-                        Cancelar
-                    </a>
+                    <div class="dias-semana">
+                        {% set dias_disponiveis = [
+                            (1, 'Segunda-feira'),
+                            (2, 'Terça-feira'),
+                            (3, 'Quarta-feira'),
+                            (4, 'Quinta-feira'),
+                            (5, 'Sexta-feira'),
+                            (6, 'Sábado'),
+                            (7, 'Domingo')
+                        ] %}
+
+                        {% for numero, nome in dias_disponiveis %}
+                            <label class="opcao-dia">
+                                <input type="checkbox"
+                                       name="dias"
+                                       value="{{ numero }}"
+                                       {% if numero|string in dados.dias %}checked{% endif %}>
+                                {{ nome }}
+                            </label>
+                        {% endfor %}
+                    </div>
                 </div>
+
+                <div class="campo">
+                    <label for="hora_inicio">Horário de início</label>
+                    <input type="time"
+                           id="hora_inicio"
+                           name="hora_inicio"
+                           value="{{ dados.hora_inicio }}"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="hora_fim">Horário de término</label>
+                    <input type="time"
+                           id="hora_fim"
+                           name="hora_fim"
+                           value="{{ dados.hora_fim }}"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="capacidade">Capacidade máxima de alunos</label>
+                    <input type="number"
+                           id="capacidade"
+                           name="capacidade"
+                           min="1"
+                           max="18"
+                           value="{{ dados.capacidade }}"
+                           required>
+                </div>
+
+                <button type="submit">SALVAR ALTERAÇÕES</button>
+
+                <a class="botao-cancelar" href="{{ url_for('grade_de_aulas') }}">
+                    Cancelar
+                </a>
 
             </form>
-
         </div>
-
     </main>
 
 </body>

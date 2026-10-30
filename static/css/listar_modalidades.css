@@ -114,21 +114,15 @@ body {
 }
 
 .icone-usuario {
-    width: 35px;
-    height: 35px;
-    border: 2px solid var(--verde-claro);
-    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--verde-principal);
+    color: var(--branco);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--preto);
     font-size: 25px;
-    background-color: var(--branco);
-}
-
-.icone-usuario img{
-    width:30px;
-    height:21px;
 }
 
 /* PAINEL */

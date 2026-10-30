@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 # Conexão com o banco
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\TRABALHOATFIT.FDB'
+database = r'C:\Users\Aluno\Downloads\BancoDados\TRABALHOATFIT.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
@@ -68,7 +68,7 @@ def novo_usuario():
     nome = request.form['nome'].strip()
     email = request.form['email'].strip()
     senha = request.form['senha']
-    confirmar_senha = request.form['confirmar_senha']
+    confirmar_senha = request.form.get('confirmar_senha', '')
 
     # Verificação campos preenchidos
     if not nome or not email or not senha or not confirmar_senha:
@@ -97,28 +97,28 @@ def novo_usuario():
 
         # Verificação de e-mail já cadastrado
         cursor.execute(
-            """ SELECT
-             id_usuario 
-             FROM USUARIO 
-             WHERE email = ?
+            """
+            SELECT id_usuario FROM USUARIO WHERE email = ?
             """,
             (email,)
         )
 
         usuario_existente = cursor.fetchone()
+
         if usuario_existente:
 
             flash('Este e-mail já está cadastrado.', 'erro')
             return redirect(url_for('novo_usuario'))
 
         # Criptografar a senha
-        senha_hash = bcrypt.generate_password_hash(senha).decode('utf-8')
+        senha_hash = bcrypt.generate_password_hash(
+            senha
+        ).decode('utf-8')
 
         # Cadastrar usuário
         cursor.execute(
             """
-            INSERT INTO 
-            USUARIO(nome, email, senha, tentativas, ativo)
+            INSERT INTO USUARIO(nome, email, senha, tentativas, ativo)
             VALUES (?, ?, ?, ?, ?)
             """,
             (nome, email, senha_hash, 0, 1)
@@ -128,31 +128,36 @@ def novo_usuario():
         con.commit()
 
         flash('Usuário cadastrado com sucesso!', 'sucesso')
+
         return redirect(url_for('login'))
 
     # Tratar erros
     except Exception as e:
 
         con.rollback()
+
         flash(f'Erro ao cadastrar usuário: {e}', 'erro')
+
         return redirect(url_for('novo_usuario'))
 
     # Fechar o cursor
     finally:
         cursor.close()
 
+
+
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    #formulário foi enviado
+    # Se o formulário foi enviado
     if request.method == 'POST':
 
-        # Pegar dados enviados
-        email = request.form['email']
-        senha = request.form['senha']
+        # Pegar os dados enviados pelo formulário
+        email = request.form.get('email')
+        senha = request.form.get('senha')
 
-        # Verificar campos
+        # Verificar se os campos foram preenchidos
         if not email or not senha:
             flash('Preencha o email e a senha.', 'erro')
             return redirect(url_for('login'))
@@ -161,7 +166,7 @@ def login():
 
         try:
 
-            # Buscar usuário por e-mail
+            # Buscar usuário pelo e-mail, incluindo o perfil
             cursor.execute(
                 """
                 SELECT
@@ -177,6 +182,7 @@ def login():
                 """,
                 (email,)
             )
+
             usuario = cursor.fetchone()
 
             # Usuário não encontrado
@@ -185,21 +191,13 @@ def login():
                 return redirect(url_for('login'))
 
             # Organizar os dados do usuário
-            (
-                id_usuario,
-                nome,
-                email_banco,
-                senha_hash,
-                tentativas,
-                ativo,
-                perfil
-            ) = usuario
+            (id_usuario, nome, email_banco, senha_hash, tentativas, ativo, perfil) = usuario
 
-            #  tentativas nula
+            # Caso tentativas esteja NULL no banco
             if tentativas is None:
                 tentativas = 0
 
-            # Verificar usuário ativo
+            # Verificar se o usuário está ativo
             if ativo == 0:
                 flash('Usuário inativo ou bloqueado.', 'erro')
                 return redirect(url_for('login'))
@@ -325,10 +323,10 @@ def editar_perfil():
     if request.method == 'POST':
 
         # Recebe os dados do formulário
-        nome = request.form['nome'].strip()
-        email = request.form['email'].strip()
-        senha = request.form['senha']
-        senha2 = request.form['senha2']
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip()
+        senha = request.form.get('senha', '')
+        senha2 = request.form.get('senha2', '')
 
         try:
             # Verifica se nome e e-mail foram preenchidos
@@ -347,10 +345,10 @@ def editar_perfil():
                 flash('Este e-mail já está cadastrado.', 'erro')
                 return redirect(url_for('editar_perfil'))
 
-            # Verifica usuário quer alterar senha
+            # Verifica se o usuário quer alterar a senha
             if senha or senha2:
 
-                # Exige o preenchimento campos
+                # Exige o preenchimento dos dois campos
                 if not senha or not senha2:
                     flash('Preencha os dois campos de senha.', 'erro')
                     return redirect(url_for('editar_perfil'))
@@ -365,7 +363,7 @@ def editar_perfil():
                     )
                     return redirect(url_for('editar_perfil'))
 
-                # verifica senhas  iguais
+                # Depois, verifica se as senhas são iguais
                 if senha != senha2:
                     flash('As senhas não são iguais.', 'erro')
                     return redirect(url_for('editar_perfil'))
@@ -456,9 +454,10 @@ def editar_perfil():
             return redirect(url_for('editar_perfil'))
 
         finally:
+            # Fecha somente o cursor, não a conexão global
             cursor.close()
 
-    # Busca os dados usuário
+    # Busca os dados atuais do usuário
     try:
         cursor.execute("""
             SELECT nome, email
@@ -484,17 +483,18 @@ def editar_perfil():
 @app.route('/logout')
 def logout():
 
-    # Apagar os dados do campo
+    # Apagar os dados da sessão
     session.clear()
 
     flash('Você saiu da sua conta, com sucesso!', 'sucesso')
+
     return redirect(url_for('login'))
 
 
 @app.route('/cadastrar_modalidade', methods=['GET', 'POST'])
 def cadastrar_modalidade():
 
-    # Verifica se usuário esta logado
+    # Verifica se o usuário está logado
     if 'id_usuario' not in session:
         flash('Faça login para acessar esta página.', 'erro')
         return redirect(url_for('login'))
@@ -502,7 +502,7 @@ def cadastrar_modalidade():
     cursor = con.cursor()
 
     try:
-        # Verifica se o usuário é adm
+        # Verifica se o usuário é administrador
         cursor.execute("""
             SELECT PERFIL
             FROM USUARIO
@@ -511,17 +511,19 @@ def cadastrar_modalidade():
 
         usuario = cursor.fetchone()
 
-        # PERFIL = 1 administrador
+        # PERFIL = 1 significa administrador
         if not usuario or usuario[0] != 1:
             flash('Acesso permitido somente ao administrador.', 'erro')
             return redirect(url_for('index'))
 
+        # Se o formulário for enviado
         if request.method == 'POST':
 
             # Recebe os dados do formulário
-            nome = request.form['nome'].strip()
-            descricao = request.form['descricao'].strip()
+            nome = request.form.get('nome', '').strip()
+            descricao = request.form.get('descricao', '').strip()
 
+            # Verifica se o nome foi preenchido
             if not nome:
                 flash('Informe o nome da modalidade.', 'erro')
                 return redirect(url_for('cadastrar_modalidade'))
@@ -539,19 +541,19 @@ def cadastrar_modalidade():
                 flash('Esta modalidade já está cadastrada.', 'erro')
                 return redirect(url_for('cadastrar_modalidade'))
 
-            # Insere a modalidade no banco
-            cursor.execute(
-                """
-                INSERT INTO MODALIDADE 
-                (NOME, DESCRICAO, ATIVO)
+            # Insere a modalidade no banco de dados
+            cursor.execute("""
+                INSERT INTO MODALIDADE (NOME, DESCRICAO, ATIVO)
                 VALUES (?, ?, ?)
             """, (nome, descricao if descricao else None, 1))
 
+            # Confirma a gravação no banco
             con.commit()
 
             flash('Modalidade cadastrada com sucesso!', 'sucesso')
             return redirect(url_for('cadastrar_modalidade'))
 
+        # Abre a página quando acessada pelo navegador
         return render_template('cadastrar_modalidade.html')
 
     except Exception as erro:
@@ -564,7 +566,10 @@ def cadastrar_modalidade():
         return redirect(url_for('cadastrar_modalidade'))
 
     finally:
+        # Fecha o cursor ao terminar
         cursor.close()
+
+
 
 
 # Dashboard administrativo
@@ -579,7 +584,7 @@ def dashboard_admin():
     cursor = con.cursor()
 
     try:
-        # verifica usuário é adm
+        # TESTE 1: verificar se o usuário é administrador
         print('TESTE 1: Verificando perfil do usuário...')
 
         cursor.execute("""
@@ -597,6 +602,7 @@ def dashboard_admin():
 
         print('TESTE 1 OK: Usuário administrador.')
 
+        # TESTE 2: contar alunos
         print('TESTE 2: Buscando total de alunos...')
 
         cursor.execute("""
@@ -609,6 +615,7 @@ def dashboard_admin():
 
         print('TESTE 2 OK: Total de alunos =', total_alunos)
 
+        # TESTE 3: contar aulas
         print('TESTE 3: Buscando total de aulas...')
 
         cursor.execute("""
@@ -620,6 +627,7 @@ def dashboard_admin():
 
         print('TESTE 3 OK: Total de aulas =', total_aulas)
 
+        # TESTE 4: contar professores
         print('TESTE 4: Buscando total de professores...')
 
         cursor.execute("""
@@ -632,6 +640,7 @@ def dashboard_admin():
 
         print('TESTE 4 OK: Total de professores =', total_professores)
 
+        # TESTE 5: abrir o HTML
         print('TESTE 5: Tentando abrir dashboard_admin.html...')
 
         return render_template(
@@ -677,18 +686,14 @@ def listar_modalidades():
 
         # Busca todas as modalidades cadastradas
         cursor.execute("""
-            SELECT
-             ID_MODALIDADE, 
-             NOME,
-             DESCRICAO, 
-             ATIVO
+            SELECT ID_MODALIDADE, NOME, DESCRICAO, ATIVO
             FROM MODALIDADE
             ORDER BY NOME
         """)
 
         modalidades = cursor.fetchall()
 
-        # Envia os dados para a página
+        # Envia os dados para a página HTML
         return render_template(
             'listar_modalidades.html',
             modalidades=modalidades
@@ -709,6 +714,7 @@ def listar_modalidades():
 @app.route('/editar_modalidade/<int:id_modalidade>', methods=['GET', 'POST'])
 def editar_modalidade(id_modalidade):
 
+    # Verifica se o usuário está logado
     if 'id_usuario' not in session:
         flash('Faça login para acessar esta página.', 'erro')
         return redirect(url_for('login'))
@@ -716,7 +722,7 @@ def editar_modalidade(id_modalidade):
     cursor = con.cursor()
 
     try:
-        # Verifica se o usuário é adm
+        # Verifica se o usuário é administrador
         cursor.execute("""
             SELECT PERFIL
             FROM USUARIO
@@ -731,11 +737,7 @@ def editar_modalidade(id_modalidade):
 
         # Busca a modalidade pelo ID
         cursor.execute("""
-            SELECT 
-            ID_MODALIDADE, 
-            NOME,
-            DESCRICAO,
-            ATIVO
+            SELECT ID_MODALIDADE, NOME, DESCRICAO, ATIVO
             FROM MODALIDADE
             WHERE ID_MODALIDADE = ?
         """, (id_modalidade,))
@@ -749,8 +751,8 @@ def editar_modalidade(id_modalidade):
         # Se o formulário for enviado
         if request.method == 'POST':
 
-            nome = request.form['nome'].strip()
-            descricao = request.form['descricao'].strip()
+            nome = request.form.get('nome', '').strip()
+            descricao = request.form.get('descricao', '').strip()
 
             # Verifica se o nome foi preenchido
             if not nome:
@@ -888,6 +890,7 @@ def excluir_modalidade(id_modalidade):
 @app.route('/cadastrar_aula', methods=['GET', 'POST'])
 def cadastrar_aula():
 
+    # Verifica se o usuário está logado
     if 'id_usuario' not in session:
         flash('Faça login para acessar esta página.', 'erro')
         return redirect(url_for('login'))
@@ -895,7 +898,7 @@ def cadastrar_aula():
     cursor = con.cursor()
 
     try:
-        # Verifica se o usuário é adm
+        # Verifica se o usuário é administrador
         cursor.execute("""
             SELECT PERFIL
             FROM USUARIO
@@ -908,7 +911,7 @@ def cadastrar_aula():
             flash('Acesso permitido somente ao administrador.', 'erro')
             return redirect(url_for('index'))
 
-        # Busca modalidade ativa
+        # Busca as modalidades ativas
         cursor.execute("""
             SELECT ID_MODALIDADE, NOME
             FROM MODALIDADE
@@ -933,18 +936,13 @@ def cadastrar_aula():
         if request.method == 'POST':
 
             modalidade = request.form['modalidade'].strip()
-
             professor = request.form['professor'].strip()
-
-            dias_selecionados = request.form.getlist('dias')
-
+            dias_selecionados = request.form['dias']
             hora_inicio = request.form['hora_inicio'].strip()
-
             hora_fim = request.form['hora_fim'].strip()
-
             capacidade_texto = request.form['capacidade'].strip()
 
-            # Verifica campos obrigatórios
+            # Verifica os campos obrigatórios
             if (
                 not modalidade
                 or not professor
@@ -967,15 +965,10 @@ def cadastrar_aula():
                 professor_id = int(professor)
                 capacidade = int(capacidade_texto)
 
-                dias = [
-                    int(dia) for dia in dias_selecionados
-                ]
+                dias = [int(dia) for dia in dias_selecionados]
 
             except ValueError:
-                flash(
-                    'Os dados informados são inválidos.',
-                    'erro'
-                )
+                flash('Os dados informados são inválidos.','erro')
 
                 return render_template(
                     'cadastrar_aula.html',
@@ -994,14 +987,8 @@ def cadastrar_aula():
                 )
 
             # Valida os dias selecionados
-            if (
-                any(dia not in range(1, 8) for dia in dias)
-                or len(dias) != len(set(dias))
-            ):
-                flash(
-                    'Selecione dias da semana válidos.',
-                    'erro'
-                )
+            if (any(dia not in range(1, 8) for dia in dias) or len(dias) != len(set(dias))):
+                flash('Selecione dias da semana válidos.','erro')
 
                 return render_template(
                     'cadastrar_aula.html',
@@ -1010,12 +997,7 @@ def cadastrar_aula():
                 )
 
             # Valida o formato dos horários
-            if (
-                len(hora_inicio) != 5
-                or len(hora_fim) != 5
-                or hora_inicio[2] != ':'
-                or hora_fim[2] != ':'
-            ):
+            if (len(hora_inicio) != 5 or len(hora_fim) != 5 or hora_inicio[2] != ':' or hora_fim[2] != ':'):
                 flash('Informe horários válidos.', 'erro')
 
                 return render_template(
@@ -1034,7 +1016,7 @@ def cadastrar_aula():
                     professores=professores
                 )
 
-            # Confirma que a modalidade existe e esta ativa
+            # Confirma que a modalidade existe e está ativa
             cursor.execute("""
                 SELECT ID_MODALIDADE
                 FROM MODALIDADE
@@ -1069,32 +1051,32 @@ def cadastrar_aula():
                     professores=professores
                 )
 
-            # Verifica se já existe uma aula duplicada
+            # Verifica conflitos de horário do professor
             for dia in dias:
                 cursor.execute("""
-                    SELECT FIRST 1 A.ID_AULA
-                    FROM AULA A
-                    INNER JOIN DIA_SEMANA D
-                        ON A.ID_AULA = D.ID_AULA
-                    WHERE A.ID_MODALIDADE = ?
-                      AND A.ID_USUARIO = ?
-                      AND D.DIA_SEMANA = ?
-                      AND D.HORA_INICIO = ?
-                      AND D.HORA_FIM = ?
-                """, (
-                    modalidade_id,
-                    professor_id,
-                    dia,
-                    hora_inicio,
-                    hora_fim
-                ))
+                               SELECT FIRST 1 A.ID_AULA
+                               FROM AULA A
+                                   INNER JOIN DIA_SEMANA D
+                               ON A.ID_AULA = D.ID_AULA
+                               WHERE A.ID_USUARIO = ?
+                                 AND D.DIA_SEMANA = ?
+                                 AND D.HORA_INICIO
+                                   < ?
+                                 AND D.HORA_FIM
+                                   > ?
+                               """, (
+                                   professor_id,
+                                   dia,
+                                   hora_fim,
+                                   hora_inicio
+                               ))
 
-                aula_existente = cursor.fetchone()
+                aula_conflito = cursor.fetchone()
 
-                if aula_existente:
+                if aula_conflito:
                     flash(
-                        'Já existe uma aula dessa modalidade, '
-                        'com esse professor, nesse dia e horário.',
+                        'Conflito de horário! Esse professor já possui '
+                        'uma aula nesse dia e horário.',
                         'erro'
                     )
 
@@ -1131,12 +1113,14 @@ def cadastrar_aula():
                     hora_fim
                 ))
 
+            # Salva os registros no banco de dados
             con.commit()
 
             flash( 'Aula cadastrada com sucesso!','sucesso')
 
             return redirect(url_for('cadastrar_aula'))
 
+        # Exibe o formulário
         return render_template(
             'cadastrar_aula.html',
             modalidades=modalidades,
@@ -1149,6 +1133,7 @@ def cadastrar_aula():
         print('Erro ao cadastrar aula:', erro)
 
         flash('Não foi possível cadastrar a aula.','erro')
+
         return redirect(url_for('dashboard_admin'))
 
     finally:
@@ -1167,7 +1152,7 @@ def grade_de_aulas():
     cursor = con.cursor()
 
     try:
-        # Verifica se o usuário é adm
+        # Verifica se o usuário é administrador
         cursor.execute("""
             SELECT PERFIL
             FROM USUARIO
@@ -1178,6 +1163,7 @@ def grade_de_aulas():
 
         if not usuario or usuario[0] != 1:
             flash('Acesso permitido somente ao administrador.','erro')
+
             return redirect(url_for('index'))
 
         # Busca as aulas com suas respectivas informações
@@ -1239,15 +1225,332 @@ def grade_de_aulas():
         con.rollback()
         print('Erro ao carregar grade de aulas:', erro)
 
-        flash(
-            'Não foi possível carregar a grade de aulas.',
-            'erro'
-        )
+        flash('Não foi possível carregar a grade de aulas.','erro')
 
         return redirect(url_for('dashboard_admin'))
 
     finally:
         cursor.close()
+
+
+
+# Editar Aula
+@app.route('/editar_aula/<int:id_aula>', methods=['GET', 'POST'])
+def editar_aula(id_aula):
+
+    if 'id_usuario' not in session:
+        flash('Faça login para acessar esta página.', 'erro')
+        return redirect(url_for('login'))
+
+    cursor = con.cursor()
+
+    try:
+        # Verifica se o usuário é administrador
+        cursor.execute("""
+            SELECT PERFIL
+            FROM USUARIO
+            WHERE ID_USUARIO = ?
+        """, (session['id_usuario'],))
+
+        usuario = cursor.fetchone()
+
+        if not usuario or usuario[0] != 1:
+            flash('Acesso permitido somente ao administrador.', 'erro')
+            return redirect(url_for('index'))
+
+        # Busca a aula
+        cursor.execute("""
+            SELECT ID_AULA, CAPACIDADE, ID_MODALIDADE, ID_USUARIO
+            FROM AULA
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        aula = cursor.fetchone()
+
+        if not aula:
+            flash('Aula não encontrada.', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        # Busca os dias e horários atuais
+        cursor.execute("""
+            SELECT DIA_SEMANA, HORA_INICIO, HORA_FIM
+            FROM DIA_SEMANA
+            WHERE ID_AULA = ?
+            ORDER BY DIA_SEMANA
+        """, (id_aula,))
+
+        registros_dias = cursor.fetchall()
+
+        dias_atuais = [str(registro[0]) for registro in registros_dias]
+
+        hora_inicio_atual = (
+            str(registros_dias[0][1])[:5] if registros_dias else ''
+        )
+
+        hora_fim_atual = (
+            str(registros_dias[0][2])[:5] if registros_dias else ''
+        )
+
+        # Busca modalidades e professores ativos
+        cursor.execute("""
+            SELECT ID_MODALIDADE, NOME
+            FROM MODALIDADE
+            WHERE ATIVO = 1
+            ORDER BY NOME
+        """)
+        modalidades = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT ID_USUARIO, NOME
+            FROM USUARIO
+            WHERE PERFIL = 2 AND ATIVO = 1
+            ORDER BY NOME
+        """)
+        professores = cursor.fetchall()
+
+        if request.method == 'POST':
+
+            modalidade = request.form.get('modalidade', '').strip()
+            professor = request.form.get('professor', '').strip()
+            dias_selecionados = request.form.getlist('dias')
+            hora_inicio = request.form.get('hora_inicio', '').strip()
+            hora_fim = request.form.get('hora_fim', '').strip()
+            capacidade_texto = request.form.get('capacidade', '').strip()
+
+            if (
+                not modalidade or not professor or not dias_selecionados
+                or not hora_inicio or not hora_fim or not capacidade_texto
+            ):
+                flash('Preencha todos os campos obrigatórios.', 'erro')
+
+            else:
+                try:
+                    modalidade_id = int(modalidade)
+                    professor_id = int(professor)
+                    capacidade = int(capacidade_texto)
+                    dias = [int(dia) for dia in dias_selecionados]
+
+                except ValueError:
+                    flash('Os dados informados são inválidos.', 'erro')
+
+                else:
+                    if capacidade < 1 or capacidade > 18:
+                        flash('A capacidade deve estar entre 1 e 18 alunos.', 'erro')
+
+                    elif (
+                        any(dia not in range(1, 8) for dia in dias)
+                        or len(dias) != len(set(dias))
+                    ):
+                        flash('Selecione dias da semana válidos.', 'erro')
+
+                    elif (
+                        len(hora_inicio) != 5 or len(hora_fim) != 5
+                        or hora_inicio[2] != ':' or hora_fim[2] != ':'
+                    ):
+                        flash('Informe horários válidos.', 'erro')
+
+                    elif hora_fim <= hora_inicio:
+                        flash(
+                            'O horário de término deve ser posterior ao início.',
+                            'erro'
+                        )
+
+                    else:
+                        # Confirma que a modalidade está ativa
+                        cursor.execute("""
+                            SELECT ID_MODALIDADE
+                            FROM MODALIDADE
+                            WHERE ID_MODALIDADE = ? AND ATIVO = 1
+                        """, (modalidade_id,))
+
+                        modalidade_valida = cursor.fetchone()
+
+                        # Confirma que o professor está ativo
+                        cursor.execute("""
+                            SELECT ID_USUARIO
+                            FROM USUARIO
+                            WHERE ID_USUARIO = ?
+                              AND PERFIL = 2
+                              AND ATIVO = 1
+                        """, (professor_id,))
+
+                        professor_valido = cursor.fetchone()
+
+                        if not modalidade_valida:
+                            flash('Selecione uma modalidade ativa.', 'erro')
+
+                        elif not professor_valido:
+                            flash('Selecione um professor ativo válido.', 'erro')
+
+                        else:
+                            # Verifica conflitos, ignorando a própria aula
+                            conflito = False
+
+                            for dia in dias:
+                                cursor.execute("""
+                                    SELECT FIRST 1 A.ID_AULA
+                                    FROM AULA A
+                                    INNER JOIN DIA_SEMANA D
+                                        ON A.ID_AULA = D.ID_AULA
+                                    WHERE A.ID_USUARIO = ?
+                                      AND D.DIA_SEMANA = ?
+                                      AND D.HORA_INICIO < ?
+                                      AND D.HORA_FIM > ?
+                                      AND A.ID_AULA <> ?
+                                """, (
+                                    professor_id,
+                                    dia,
+                                    hora_fim,
+                                    hora_inicio,
+                                    id_aula
+                                ))
+
+                                if cursor.fetchone():
+                                    conflito = True
+                                    break
+
+                            if conflito:
+                                flash(
+                                    'Conflito de horário! Esse professor já '
+                                    'possui uma aula nesse dia e horário.',
+                                    'erro'
+                                )
+
+                            else:
+                                try:
+                                    # Atualiza os dados principais
+                                    cursor.execute("""
+                                        UPDATE AULA
+                                        SET CAPACIDADE = ?,
+                                            ID_MODALIDADE = ?,
+                                            ID_USUARIO = ?
+                                        WHERE ID_AULA = ?
+                                    """, (
+                                        capacidade,
+                                        modalidade_id,
+                                        professor_id,
+                                        id_aula
+                                    ))
+
+                                    # Remove os dias antigos
+                                    cursor.execute("""
+                                        DELETE FROM DIA_SEMANA
+                                        WHERE ID_AULA = ?
+                                    """, (id_aula,))
+
+                                    # Grava os dias e horários atualizados
+                                    for dia in dias:
+                                        cursor.execute("""
+                                            INSERT INTO DIA_SEMANA
+                                                (ID_AULA, DIA_SEMANA,
+                                                 HORA_INICIO, HORA_FIM)
+                                            VALUES (?, ?, ?, ?)
+                                        """, (
+                                            id_aula,
+                                            dia,
+                                            hora_inicio,
+                                            hora_fim
+                                        ))
+
+                                    con.commit()
+
+                                    flash('Aula atualizada com sucesso!', 'sucesso')
+                                    return redirect(url_for('grade_de_aulas'))
+
+                                except Exception:
+                                    con.rollback()
+                                    raise
+
+        # Mantém os dados enviados no formulário quando há erro
+        dados_formulario = {
+            'modalidade': request.form.get('modalidade', str(aula[2])),
+            'professor': request.form.get('professor', str(aula[3])),
+            'dias': request.form.getlist('dias') if request.method == 'POST' else dias_atuais,
+            'hora_inicio': request.form.get('hora_inicio', hora_inicio_atual),
+            'hora_fim': request.form.get('hora_fim', hora_fim_atual),
+            'capacidade': request.form.get('capacidade', str(aula[1]))
+        }
+
+        return render_template(
+            'editar_aula.html',
+            aula=aula,
+            modalidades=modalidades,
+            professores=professores,
+            dados=dados_formulario
+        )
+
+    except Exception as erro:
+        con.rollback()
+        print('Erro ao editar aula:', erro)
+        flash('Não foi possível editar a aula.', 'erro')
+        return redirect(url_for('grade_de_aulas'))
+
+    finally:
+        cursor.close()
+
+
+# Excluir Aula
+@app.route('/excluir_aula/<int:id_aula>', methods=['POST'])
+def excluir_aula(id_aula):
+
+    if 'id_usuario' not in session:
+        flash('Faça login para acessar esta página.', 'erro')
+        return redirect(url_for('login'))
+
+    cursor = con.cursor()
+
+    try:
+        # Verifica se o usuário é administrador
+        cursor.execute("""
+            SELECT PERFIL
+            FROM USUARIO
+            WHERE ID_USUARIO = ?
+        """, (session['id_usuario'],))
+
+        usuario = cursor.fetchone()
+
+        if not usuario or usuario[0] != 1:
+            flash('Acesso permitido somente ao administrador.', 'erro')
+            return redirect(url_for('index'))
+
+        # Confirma que a aula existe
+        cursor.execute("""
+            SELECT ID_AULA
+            FROM AULA
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        if not cursor.fetchone():
+            flash('Aula não encontrada.', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        # Exclui primeiro os dias vinculados à aula
+        cursor.execute("""
+            DELETE FROM DIA_SEMANA
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        # Depois exclui a aula
+        cursor.execute("""
+            DELETE FROM AULA
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        con.commit()
+
+        flash('Aula excluída com sucesso!', 'sucesso')
+
+    except Exception as erro:
+        con.rollback()
+        print('Erro ao excluir aula:', erro)
+        flash('Não foi possível excluir a aula.', 'erro')
+
+    finally:
+        cursor.close()
+
+    return redirect(url_for('grade_de_aulas'))
+
+
 
 
 

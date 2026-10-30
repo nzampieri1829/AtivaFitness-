@@ -15,16 +15,44 @@
     <aside class="menu-lateral">
 
         <div class="logo">
-            <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
         </div>
 
-        <nav>
-            <a href="{{ url_for('index') }}">Início</a>
-            <a href="{{ url_for('editar_perfil') }}" class="ativo">Perfil</a>
-            <a href="{{ url_for('logout') }}">Sair</a>
+        <nav class="navegacao">
+
+            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
         </nav>
 
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
     </aside>
+
+
+
 
     <!-- CONTEÚDO DA PÁGINA -->
     <main class="conteudo">
@@ -104,26 +132,6 @@
         </section>
 
     </main>
-
-    <!-- MENU INFERIOR PARA CELULAR -->
-    <nav class="menu-inferior">
-
-        <a href="{{ url_for('index') }}" class="item-menu">
-            <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="">
-            <span>Início</span>
-        </a>
-
-        <a href="{{ url_for('editar_perfil') }}" class="item-menu ativo">
-            <img src="{{ url_for('static', filename='img/icone_perfil.png') }}" alt="">
-            <span>Perfil</span>
-        </a>
-
-        <a href="{{ url_for('logout') }}" class="item-menu">
-            <img src="{{ url_for('static', filename='img/icone_sair.png') }}" alt="">
-            <span>Sair</span>
-        </a>
-
-    </nav>
 
 </body>
 </html>
