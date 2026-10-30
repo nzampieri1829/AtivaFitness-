@@ -13,77 +13,155 @@
             <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
         </header>
 
-        <aside class="menu-lateral">
+   <aside class="menu-lateral">
 
-            <div class="logo">
-                <img src="{{ url_for('static', filename='img/logobranca.png') }}" alt="ATIVA Fitness">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav class="navegacao">
+
+            <a href="{{ url_for('index') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                <span>Início</span>
+            </a>
+
+            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                <span>Grade de aulas</span>
+            </a>
+
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                <span>Perfil</span>
+            </a>
+
+        </nav>
+
+        <div class="sair">
+            <a href="{{ url_for('logout') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+<main class="conteudo">
+
+    <div class="painel">
+
+        <!-- CABEÇALHO -->
+        <header class="cabecalho">
+            <div class="usuario">
+                <span>{{ nome }}</span>
+
+                <div class="icone-usuario">
+                    <img src="{{ url_for('static', filename='img/img_perfil_nome.png') }}"
+                         alt="Usuário">
+                </div>
+            </div>
+        </header>
+
+        <!-- MENSAGENS DO FLASK -->
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% if mensagens %}
+                {% for categoria, mensagem in mensagens %}
+                    <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- BOAS-VINDAS -->
+        <section class="boas-vindas">
+            <h1>Olá, {{ nome }}!</h1>
+            <p>É ótimo ter você conosco!</p>
+        </section>
+
+        <!-- CARDS DE RESUMO -->
+        <section class="resumo-aulas">
+
+            <div class="card-resumo">
+                <h2>MINHAS AULAS</h2>
+                <strong>{{ minhas_aulas|default(2) }}</strong>
+                <span>Aulas agendadas para esta semana</span>
             </div>
 
-            <nav>
-                <a href="#" class="ativo">Início</a>
-                <a href="{{ url_for('editar_perfil') }}">Perfil</a>
-                <a href="{{ url_for('logout')}}">Sair</a>
-            </nav>
-
-        </aside>
-
-        <main class="conteudo">
-
-            <div class="painel">
-
-                <header class="cabecalho">
-
-                    <div class="usuario">
-                        <span>{{ nome }}</span>
-
-                        <div class="icone-usuario">
-                            <img src="{{ url_for('static', filename='img/img_perfil_nome.png') }}" alt="Usuário">
-                        </div>
-                    </div>
-
-                </header>
-
-                    <!-- Exibição das mensagens do Flask -->
-                {% with mensagens = get_flashed_messages(with_categories=true) %}
-                    {% if mensagens %}
-                        {% for categoria, mensagem in mensagens %}
-                            <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
-                <section class="boas-vindas">
-                    <h1>Olá, {{ nome }}!</h1>
-                    <p>É ótimo ter você conosco!</p>
-                </section>
-
+            <div class="card-resumo">
+                <h2>AULAS DISPONÍVEIS</h2>
+                <strong>{{ aulas_disponiveis|default(6) }}</strong>
+                <span>Aulas disponíveis para inscrição</span>
             </div>
 
-            </main>
+        </section>
 
-            <nav class="menu-inferior">
+        <!-- PRÓXIMAS AULAS -->
+        <section class="proximas-aulas">
 
-                <a href="#" class="item-menu">
-                    <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="Início">
-                    <span>Início</span>
+            <h2>Próximas aulas</h2>
+
+            <!-- AULA DE RITMOS -->
+            <article class="card-aula">
+
+
+                <div class="informacoes-aula">
+                    <h3>Ritmos</h3>
+
+                    <p>
+                        Aula divertida para melhorar ritmo,
+                        coordenação e condicionamento.
+                    </p>
+
+                    <span class="horario">
+                        <span class="relogio">◷</span>
+                        Quinta-Feira 14:00
+                    </span>
+                </div>
+
+                <a href="{{ url_for('grade_de_aulas') }}"
+                   class="botao-agendar">
+                    AGENDAR AULA
                 </a>
 
-                <a href="{{ url_for('editar_perfil') }}" class="item-menu">
-                    <img src="{{ url_for('static', filename='img/icone_perfil.png') }}" alt="Perfil">
-                    <span>Perfil</span>
+            </article>
+
+            <!-- AULA FUNCIONAL -->
+            <article class="card-aula">
+
+
+
+                <div class="informacoes-aula">
+                    <h3>Funcional</h3>
+
+                    <p>
+                        Treino dinâmico para melhorar
+                        força e resistência.
+                    </p>
+
+                    <span class="horario">
+                        <span class="relogio">◷</span>
+                        Quinta-Feira 16:00
+                    </span>
+                </div>
+
+                <a href="{{ url_for('grade_de_aulas') }}"
+                   class="botao-agendar">
+                    AGENDAR AULA
                 </a>
 
-                <a href="#" class="item-menu">
-                    <img src="{{ url_for('static', filename='img/icone_grade.png') }}" alt="Grade de Aulas">
-                    <span>Grade de Aulas</span>
-                </a>
+            </article>
 
-                <a href="{{ url_for('logout')}}" class="item-menu">
-                    <img src="{{ url_for('static', filename='img/icone_sair.png') }}" alt="Sair">
-                    <span>Sair</span>
-                </a>
+        </section>
 
-            </nav>
+    </div>
+
+</main>
 
     </body>
 </html>

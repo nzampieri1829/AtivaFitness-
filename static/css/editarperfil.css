@@ -109,18 +109,19 @@ body {
 
 .cartao-perfil {
     position: relative;
-    width: 100%;
-    max-width: 700px;
-    min-height: 438px;
+    width: 1200px;
     margin: 0 auto;
-    padding: 49px 27px 30px;
+    padding: 50px 27px 30px;
     border: 1px solid #888888;
     border-radius: 7px;
+    margin-left: 70px;
+    height: 550px;
+    margin-top: 75px;
 }
 
 .cartao-perfil h1 {
     margin-bottom: 34px;
-    font-size: 19px;
+    font-size: 25px;
     font-weight: 700;
 }
 
@@ -135,13 +136,13 @@ body {
 
 .campo label {
     margin: 0 0 5px 2px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
 }
 
 .campo input {
     width: 100%;
-    height: 39px;
+    height: 47px;
     padding: 0 13px;
     border: 1px solid #D6D6D6;
     border-radius: 9px;
@@ -171,7 +172,7 @@ body {
     background: var(--verde-principal);
     color: var(--branco);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
 }

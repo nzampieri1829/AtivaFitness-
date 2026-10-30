@@ -36,383 +36,480 @@ body {
 }
 
 /* MENU LATERAL */
-
 .menu-lateral {
-    width: 205px;
+    width: 260px;
     height: 100vh;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--verde-escuro), var(--verde-escuro));
-    border: 1px solid var(--preto);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--verde-escuro);
     padding: 25px 18px;
-}
-
-.logo {
-    width: 100%;
-    height: 82px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.logo img {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-}
-
-.menu-lateral nav {
     display: flex;
     flex-direction: column;
-    gap: 13px;
-}
-
-.menu-lateral nav a {
-    height: 38px;
-    display: flex;
-    align-items: center;
-    padding-left: 29px;
-    text-decoration: none;
-    color: var(--branco);
-    font-size: 13px;
-    border: 1px solid rgba(0, 0, 0, 0.18);
-    border-radius: 11px;
-    position: relative;
     z-index: 2;
 }
 
-.menu-lateral nav a.ativo {
+.logo {
+    width: 125px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 35px;
+    margin-right: 80px;
+}
+
+.menu-lateral nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.item-menu img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.item-menu:hover,
+.item-menu.ativo {
     background-color: var(--verde-principal);
-    border-color: var(--verde-principal);
-    font-weight: bold;
+    border-color: var(--verde-claro);
+}
+
+.sair {
+    margin-top: auto;
 }
 
 
-/* ÁREA PRINCIPAL */
+/* =========================================
+   DASHBOARD - NOVO VISUAL
+========================================= */
 
+/* Área principal */
 .conteudo {
     flex: 1;
     min-width: 0;
+    min-height: 100vh;
     height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
     position: relative;
-    overflow: hidden;
-    padding: 24px 23px 27px 20px;
 }
 
 .painel {
     width: 100%;
-    height: 100%;
+    max-width: 1250px;
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding-bottom: 35px;
     position: relative;
-    z-index: 1;
-    border: 2px solid #999999;
-    border-radius: 9px;
-    background-color: var(--branco);
     overflow: hidden;
+    border: none;
+    border-radius: 8px;
+    background: var(--branco);
+    margin-left: 43px;
 }
 
-/* CABEÇALHO */
-
+/* Cabeçalho */
 .cabecalho {
     width: 100%;
-    height: 60px;
+    height: 55px;
     display: flex;
     align-items: center;
-    padding: 0 29px;
+    justify-content: flex-end;
+    padding: 0 25px;
+    position: relative;
+    z-index: 1;
 }
 
 .usuario {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 15px;
-    color: var(--verde-escuro);
-    font-size: 20px;
-    font-weight: bold;
-    position: relative;
-    z-index: 3;
+    gap: 9px;
     margin-left: auto;
+    color: var(--verde-escuro);
+    font-size: 13px;
+    font-weight: 700;
 }
 
-.usuario .icone-usuario {
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--verde-principal);
+.icone-usuario {
+    width: 27px;
+    height: 27px;
+    border: 2px solid var(--verde-escuro);
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 3;
-    flex-shrink: 0;
 }
 
-.usuario .icone-usuario img {
+.icone-usuario img {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
 
-/* TEXTO DE BOAS-VINDAS */
-
+/* Boas-vindas */
 .boas-vindas {
-    padding: 0 34px;
-    margin-top: 0;
+    padding: 8px 30px;
+    margin-bottom: 23px;
+    position: relative;
+    z-index: 1;
 }
 
 .boas-vindas h1 {
-    font-size: 35px;
-    color: var(--cinza-texto);
-    font-weight: bold;
+    color: var(--cinza-escuro);
+    font-size: 27px;
+    font-weight: 750;
     margin-bottom: 3px;
 }
 
 .boas-vindas p {
     color: #999999;
+    font-size: 15px;
+}
+
+/* Cards de resumo */
+.resumo-aulas {
+    display: flex;
+    gap: 18px;
+    padding: 0 30px;
+    margin-bottom: 48px;
+    margin-top: 51px;
+}
+
+.card-resumo {
+    flex: 1;
+    min-height: 110px;
+    background: #eeeeee;
+    border: 1px solid #b8b8b8;
+    border-radius: 9px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.card-resumo:nth-child(2) {
+    border-color: #70c982;
+}
+
+.card-resumo h2 {
+    color: var(--verde-escuro);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 1px;
+}
+
+.card-resumo strong {
+    color: var(--cinza-escuro);
+    font-size: 29px;
+    font-weight: 800;
+}
+
+.card-resumo span {
+    color: #777777;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+/* Próximas aulas */
+.proximas-aulas {
+    padding: 0 25px;
+}
+
+.proximas-aulas > h2 {
+    color: var(--cinza-escuro);
+    font-size: 19px;
+    font-weight: 750;
+    margin-bottom: 12px;
+}
+
+/* Card individual */
+.card-aula {
+    width: 100%;
+    min-height: 136px;
+    border: 1px solid #72d58a;
+    border-radius: 9px;
+    margin-bottom: 17px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: var(--branco);
+    transition: 0.2s;
+}
+
+.card-aula:hover {
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.10);
+}
+
+/* Ícones das modalidades */
+.icone-aula {
+    width: 59px;
+    height: 59px;
+    min-width: 59px;
+    border-radius: 50%;
+    background: #ddf8df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-aula span {
+    font-size: 30px;
+}
+
+/* Informações */
+.informacoes-aula {
+    flex: 1;
+    min-width: 0;
+}
+
+.informacoes-aula h3 {
+    color: var(--cinza-escuro);
     font-size: 20px;
+    font-weight: 750;
+    margin-bottom: 9px;
 }
 
-.mensagem {
-    padding: 12px;
-    margin: 15px 20px;
-    border-radius: 5px;
+.informacoes-aula p {
+    color: #999999;
+    font-size: 13px;
+    line-height: 1.4;
+    max-width: 230px;
+}
+
+.horario {
+    display: block;
+    color: #999999;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.relogio {
     font-size: 14px;
+    margin-right: 4px;
 }
 
-/* Mensagem de sucesso */
-.mensagem.sucesso {
-    background-color: #d4edda;
-    color: #155724;
+/* Botão agendar */
+.botao-agendar {
+    background: #0bbd42;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 750;
+    padding: 9px 17px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: 0.2s;
+    margin-right: 33px;
 }
 
-/* Mensagem de erro */
-.mensagem.erro {
-    background-color: #f8d7da;
-    color: #721c24;
+.botao-agendar:hover {
+    background: var(--verde-escuro);
 }
 
-
-/* AJUSTE PARA TELAS MENORES */
-
-@media (max-width: 600px) {
-    .menu-lateral {
-        width: 150px;
-        padding: 20px 10px;
-    }
-
-    .logo img {
-        width: 85px;
-    }
-
-    .menu-lateral nav a {
-        padding-left: 15px;
-    }
+/* Mensagens */
+.mensagem {
+    position: relative;
+    z-index: 2;
 }
 
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
 
-    .conteudo {
-        padding: 15px 10px;
-    }
-
-    .boas-vindas {
-        padding: 0 18px;
-    }
-
-    .boas-vindas h1 {
-        font-size: 19px;
-    }
-
-    .cabecalho {
-        padding: 0 15px;
-    }
-
-
-/* MOBILE */
-
-.cabecalho-mobile,
-.menu-inferior {
-    display: none;
-}
-
-/* MOBILE L - 425px */
-
-@media (max-width: 425px) {
-    body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        height: 100dvh;
-        overflow: hidden;
-    }
-
-    .cabecalho-mobile {
-        display: flex;
-        align-items: center;
-        height: 52px;
-        min-height: 52px;
-        width: 100%;
-        padding: 5px 18px;
-        background: linear-gradient(120deg, var(--verde-escuro), var(--verde-principal));
-        position: relative;
-        z-index: 2;
-    }
-
-    .cabecalho-mobile img {
-        width: 48px;
-        height: 42px;
-        object-fit: contain;
-    }
+@media (max-width: 768px) {
 
     .menu-lateral {
         display: none;
     }
 
-    .conteudo {
-        flex: 1;
-        width: 100%;
-        min-height: 0;
-        height: auto;
-        padding: 51px 9px;
-        overflow: hidden;
-        position: relative;
+    .cabecalho-mobile {
+        display: none;
     }
 
+    .conteudo {
+        width: 100%;
+        height: 100dvh;
+        min-height: 0;
+        padding: 5px 3px;
+        overflow-y: auto;
+    }
 
     .painel {
         width: 100%;
-        height: 100%;
-        position: relative;
-        z-index: 1;
-        background: var(--branco);
-        border: 1px solid #AAAAAA;
-        border-radius: 11px;
-        overflow: hidden;
+        min-height: 100%;
+        padding-bottom: 25px;
     }
 
     .cabecalho {
-        display: none;
+        height: 42px;
+        padding: 0 20px;
+    }
+
+    .usuario {
+        font-size: 10px;
+        gap: 7px;
+    }
+
+    .icone-usuario {
+        width: 24px;
+        height: 24px;
     }
 
     .boas-vindas {
-        padding: 15px;
-        margin: 0;
+        padding: 0 27px;
+        margin-top: 0;
+        margin-bottom: 19px;
     }
 
     .boas-vindas h1 {
-        font-size: 16px;
-        margin-bottom: 0;
+        font-size: 18px;
     }
 
     .boas-vindas p {
-        display: none;
+        font-size: 11px;
     }
 
-    .decoracao {
-        display: none;
+    .resumo-aulas {
+        gap: 14px;
+        padding: 0 27px;
+        margin-bottom: 28px;
     }
 
-    .menu-inferior {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        width: 100%;
-        height: 49px;
-        min-height: 49px;
-        background: var(--verde-principal);
-        position: relative;
-        z-index: 3;
+    .card-resumo {
+        min-height: 69px;
+        padding: 6px;
     }
 
-    .item-menu img {
-        width: 27px;
-        height: 27px;
-        object-fit: contain;
-        display: block;
+    .card-resumo h2 {
+        font-size: 11px;
     }
 
-    .item-menu {
-        display: flex;
-        flex: 1;
-        height: 100%;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-        color: var(--branco);
-        text-decoration: none;
-        font-size: 9px;
-        font-weight: bold;
-    }
-}
-
-/* MOBILE M - 375px */
-
-@media (max-width: 375px) {
-    .cabecalho-mobile {
-        height: 52px;
-        min-height: 52px;
+    .card-resumo strong {
+        font-size: 22px;
     }
 
-    .conteudo {
-        padding: 51px 9px;
-    }
-
-    .boas-vindas {
-        padding: 15px;
-    }
-
-    .boas-vindas h1 {
-        font-size: 15px;
-    }
-
-    .item-menu {
-        font-size: 8px;
-    }
-
-    .icone-menu {
-        font-size: 23px;
-        line-height: 24px;
-    }
-}
-
-/* MOBILE S - 320px */
-
-@media (max-width: 320px) {
-    .cabecalho-mobile {
-        height: 48px;
-        min-height: 48px;
-        padding-left: 13px;
-    }
-
-    .cabecalho-mobile img {
-        width: 43px;
-        height: 38px;
-    }
-
-    .conteudo {
-        padding: 46px 7px;
-    }
-
-    .boas-vindas {
-        padding: 13px;
-    }
-
-    .boas-vindas h1 {
-        font-size: 14px;
-    }
-
-    .menu-inferior {
-        height: 47px;
-        min-height: 47px;
-    }
-
-    .item-menu {
+    .card-resumo span {
         font-size: 7px;
     }
 
-    .icone-menu {
-        font-size: 21px;
-        line-height: 22px;
+    .proximas-aulas {
+        padding: 0 24px;
+    }
+
+    .proximas-aulas > h2 {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .card-aula {
+        min-height: 59px;
+        padding: 5px 10px;
+        gap: 9px;
+        margin-bottom: 17px;
+    }
+
+    .icone-aula {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+    }
+
+    .icone-aula span {
+        font-size: 23px;
+    }
+
+    .informacoes-aula h3 {
+        font-size: 12px;
+    }
+
+    .informacoes-aula p {
+        font-size: 8px;
+        line-height: 1.3;
+    }
+
+    .horario {
+        font-size: 8px;
+        margin-top: 2px;
+    }
+
+    .relogio {
+        font-size: 11px;
+    }
+
+    .botao-agendar {
+        font-size: 8px;
+        padding: 6px 9px;
+    }
+
+    .menu-inferior {
+        display: none;
+    }
+}
+
+/* Celulares menores */
+@media (max-width: 375px) {
+
+    .resumo-aulas {
+        gap: 9px;
+        padding: 0 18px;
+    }
+
+    .card-resumo h2 {
+        font-size: 10px;
+    }
+
+    .proximas-aulas {
+        padding: 0 17px;
+    }
+
+    .card-aula {
+        gap: 7px;
+        padding: 5px 7px;
+    }
+
+    .icone-aula {
+        width: 39px;
+        height: 39px;
+        min-width: 39px;
+    }
+
+    .icone-aula span {
+        font-size: 20px;
+    }
+
+    .informacoes-aula h3 {
+        font-size: 11px;
+    }
+
+    .informacoes-aula p {
+        font-size: 7px;
+    }
+
+    .botao-agendar {
+        font-size: 7px;
+        padding: 6px 7px;
     }
 }

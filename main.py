@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 # Conexão com o banco
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\BancoDados\TRABALHOATFIT.FDB'
+database = r'C:\Users\Aluno\Downloads\TRABALHOATFIT.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
@@ -118,12 +118,13 @@ def novo_usuario():
         # Cadastrar usuário
         cursor.execute(
             """
-            INSERT INTO USUARIO(nome, email, senha, tentativas, ativo)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO USUARIO(nome, email, senha, tentativas, ativo, perfil)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
-            (nome, email, senha_hash, 0, 1)
+            (nome, email, senha_hash, 0, 1, 2)
         )
 
+        # Salvar no banco
         # Salvar no banco
         con.commit()
 
@@ -316,6 +317,13 @@ def editar_perfil():
         return redirect(url_for('login'))
 
     id_usuario = session['id_usuario']
+
+    perfil = session['perfil']
+
+    if perfil == 1:
+        pagina_inicio = 'dashboard_admin'
+    else:
+        pagina_inicio = 'index'
 
     # Utiliza a conexão global com o banco
     cursor = con.cursor()

@@ -21,11 +21,10 @@
 
         <nav class="navegacao">
 
-            <a href="{{ url_for('dashboard_admin') }}" class="item-menu">
-                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
-                     alt="">
-                <span>Início</span>
-            </a>
+              <a href="{{ url_for(pagina_inicio) }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}" alt="">
+                  <span>Início</span>
+                </a>
 
             <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
                 <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
