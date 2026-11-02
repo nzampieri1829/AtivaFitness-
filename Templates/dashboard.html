@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Início - ATIVA Fitness</title>
+        <title>Dashboard Aluno - ATIVA Fitness</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     </head>
@@ -28,8 +28,7 @@
                 <span>Início</span>
             </a>
 
-            <a href="{{ url_for('grade_de_aulas') }}" class="item-menu">
-                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+            <a href="{{ url_for('grade_aulas_aluno') }}" class="item-menu">                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
                      alt="">
                 <span>Grade de aulas</span>
             </a>
@@ -124,7 +123,7 @@
                     </span>
                 </div>
 
-                <a href="{{ url_for('grade_de_aulas') }}"
+                <a href="{{ url_for('grade_aulas_aluno') }}"
                    class="botao-agendar">
                     AGENDAR AULA
                 </a>
@@ -150,7 +149,7 @@
                     </span>
                 </div>
 
-                <a href="{{ url_for('grade_de_aulas') }}"
+                <a href="{{ url_for('grade_aulas_aluno') }}"
                    class="botao-agendar">
                     AGENDAR AULA
                 </a>

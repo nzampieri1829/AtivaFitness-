@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 # Conexão com o banco
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\TRABALHOATFIT.FDB'
+database = r'C:\Users\eliza\Downloads\TRABALHOATFIT.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
@@ -31,29 +31,34 @@ def home():
 # Função senha forte
 def senha_forte(senha):
 
-    if len(senha) < 8:
-        return False
+        if len(senha) < 8:
+            return False
 
-    tem_maiuscula = False
-    tem_minuscula = False
-    tem_numero = False
-    tem_especial = False
+        tem_maiuscula = False
+        tem_minuscula = False
+        tem_numero = False
+        tem_especial = False
 
-    for caractere in senha:
+        for caractere in senha:
 
-        if caractere.isupper():
-            tem_maiuscula = True
+            if caractere.isupper():
+                tem_maiuscula = True
 
-        elif caractere.islower():
-            tem_minuscula = True
+            if caractere.islower():
+                tem_minuscula = True
 
-        elif caractere.isdigit():
-            tem_numero = True
+            if caractere.isdigit():
+                tem_numero = True
 
-        else:
-            tem_especial = True
+            if not caractere.isalnum():
+                tem_especial = True
 
-    return (tem_maiuscula and tem_minuscula and tem_numero and tem_especial)
+        return (
+                tem_maiuscula
+                and tem_minuscula
+                and tem_numero
+                and tem_especial
+        )
 
 
 # Cadastrar novo usuário
@@ -204,6 +209,10 @@ def login():
                 return redirect(url_for('login'))
 
             # Verificar a senha
+            if not senha_hash:
+                flash('Email ou senha incorretos.', 'erro')
+                return redirect(url_for('login'))
+
             if bcrypt.check_password_hash(senha_hash, senha):
 
                 # Verificar se o perfil está definido
@@ -466,26 +475,33 @@ def editar_perfil():
             cursor.close()
 
     # Busca os dados atuais do usuário
+    # Busca os dados atuais do usuário
+
+
     try:
         cursor.execute("""
-            SELECT nome, email
-            FROM USUARIO
-            WHERE id_usuario = ?
-        """, (id_usuario,))
+                       SELECT nome, email
+                       FROM USUARIO
+                       WHERE id_usuario = ?
+                       """, (id_usuario,))
 
         usuario = cursor.fetchone()
 
     finally:
-        # Fecha somente o cursor
         cursor.close()
 
-    # Exibe a página com os dados atuais
+        # Verifica se encontrou o usuário
+    if not usuario:
+        flash('Usuário não encontrado.', 'erro')
+        return redirect(url_for('login'))
+
+        # Abre a página de perfil
     return render_template(
         'editar_perfil.html',
         nome=usuario[0],
-        email=usuario[1]
+        email=usuario[1],
+        pagina_inicio=pagina_inicio
     )
-
 
 # Logout
 @app.route('/logout')
@@ -867,8 +883,7 @@ def excluir_modalidade(id_modalidade):
 
         if aula:
             flash(
-                'Não é possível excluir esta modalidade, '
-                'pois existem aulas vinculadas a ela.',
+                'Não é possível excluir esta modalidade, pois existem aulas vinculadas a ela.',
                 'erro'
             )
             return redirect(url_for('listar_modalidades'))
@@ -945,7 +960,7 @@ def cadastrar_aula():
 
             modalidade = request.form['modalidade'].strip()
             professor = request.form['professor'].strip()
-            dias_selecionados = request.form['dias']
+            dias_selecionados = request.form.getlist('dias')
             hora_inicio = request.form['hora_inicio'].strip()
             hora_fim = request.form['hora_fim'].strip()
             capacidade_texto = request.form['capacidade'].strip()
@@ -1147,12 +1162,10 @@ def cadastrar_aula():
     finally:
         cursor.close()
 
-
 # Grade de aulas
 @app.route('/grade_de_aulas')
 def grade_de_aulas():
 
-    # Verifica se o usuário está logado
     if 'id_usuario' not in session:
         flash('Faça login para acessar esta página.', 'erro')
         return redirect(url_for('login'))
@@ -1160,21 +1173,9 @@ def grade_de_aulas():
     cursor = con.cursor()
 
     try:
-        # Verifica se o usuário é administrador
-        cursor.execute("""
-            SELECT PERFIL
-            FROM USUARIO
-            WHERE ID_USUARIO = ?
-        """, (session['id_usuario'],))
+        perfil = session['perfil']
 
-        usuario = cursor.fetchone()
-
-        if not usuario or usuario[0] != 1:
-            flash('Acesso permitido somente ao administrador.','erro')
-
-            return redirect(url_for('index'))
-
-        # Busca as aulas com suas respectivas informações
+        # Busca as aulas cadastradas
         cursor.execute("""
             SELECT
                 A.ID_AULA,
@@ -1183,36 +1184,29 @@ def grade_de_aulas():
                 A.CAPACIDADE,
                 D.DIA_SEMANA,
                 D.HORA_INICIO,
-                D.HORA_FIM
+                D.HORA_FIM,
+
+                (SELECT COUNT(*)
+                 FROM AGENDAMENTO G
+                 WHERE G.ID_AULA = A.ID_AULA) AS INSCRITOS
+
             FROM AULA A
+
             INNER JOIN MODALIDADE M
                 ON A.ID_MODALIDADE = M.ID_MODALIDADE
+
             INNER JOIN USUARIO U
                 ON A.ID_USUARIO = U.ID_USUARIO
+
             LEFT JOIN DIA_SEMANA D
                 ON A.ID_AULA = D.ID_AULA
-            ORDER BY
-                D.DIA_SEMANA,
-                D.HORA_INICIO
+
+            ORDER BY D.DIA_SEMANA, D.HORA_INICIO
         """)
 
         aulas = cursor.fetchall()
-        aulas_corrigidas = []
 
-        for aula in aulas:
-            dia = int(aula[4]) if aula[4] else None
-
-            aulas_corrigidas.append((
-                aula[0],
-                aula[1],
-                aula[2],
-                aula[3],
-                dia,
-                aula[5],
-                aula[6]
-            ))
-
-        # Converte os números dos dias em nomes
+        # Nomes dos dias da semana
         dias_semana = {
             1: 'Segunda-feira',
             2: 'Terça-feira',
@@ -1223,22 +1217,288 @@ def grade_de_aulas():
             7: 'Domingo'
         }
 
+        # Se for administrador, abre a grade administrativa
+        if perfil == 1:
+
+            aulas_corrigidas = []
+
+            for aula in aulas:
+                dia = int(aula[4]) if aula[4] else None
+
+                aulas_corrigidas.append((
+                    aula[0], aula[1], aula[2], aula[3],
+                    dia, aula[5], aula[6]
+                ))
+
+            return render_template(
+                'grade_de_aulas.html',
+                aulas=aulas_corrigidas,
+                dias_semana=dias_semana
+            )
+
+        # Se for aluno, busca suas inscrições
+        if perfil == 3:
+
+            cursor.execute("""
+                SELECT ID_AULA
+                FROM AGENDAMENTO
+                WHERE ID_USUARIO = ?
+            """, (session['id_usuario'],))
+
+            inscricoes = cursor.fetchall()
+
+            minhas_inscricoes = [
+                registro[0] for registro in inscricoes
+            ]
+
+            return render_template(
+                'grade_aulas_aluno.html',
+                aulas=aulas,
+                dias_semana=dias_semana,
+                minhas_inscricoes=minhas_inscricoes
+            )
+
+        flash('Acesso não permitido.', 'erro')
+        return redirect(url_for('index'))
+
+    except Exception as erro:
+        con.rollback()
+        print('Erro ao carregar grade:', erro)
+
+        flash('Não foi possível carregar a grade de aulas.', 'erro')
+        return redirect(url_for('index'))
+
+    finally:
+        cursor.close()
+
+
+# Grade de aulas do aluno
+@app.route('/grade_aulas_aluno', methods=['GET', 'POST'])
+def grade_aulas_aluno():
+
+    if 'id_usuario' not in session:
+        return redirect(url_for('login'))
+
+    id_usuario = session['id_usuario']
+    cursor = con.cursor()
+
+    try:
+        # Verifica se é aluno
+        cursor.execute("""
+            SELECT PERFIL
+            FROM USUARIO
+            WHERE ID_USUARIO = ?
+        """, (id_usuario,))
+
+        usuario = cursor.fetchone()
+
+        if not usuario or usuario[0] != 2:
+            flash('Acesso permitido somente ao aluno.', 'erro')
+            return redirect(url_for('index'))
+
+        # Inscrição em uma aula
+        if request.method == 'POST':
+
+            id_aula = request.form.get('id_aula')
+
+            cursor.execute("""
+                SELECT CAPACIDADE
+                FROM AULA
+                WHERE ID_AULA = ?
+            """, (id_aula,))
+
+            aula = cursor.fetchone()
+
+            if not aula:
+                flash('Aula não encontrada.', 'erro')
+
+            else:
+                # Verifica se o aluno já está inscrito
+                cursor.execute("""
+                    SELECT ID_AGENDAMENTO
+                    FROM AGENDAMENTO
+                    WHERE ID_USUARIO = ?
+                    AND ID_AULA = ?
+                """, (id_usuario, id_aula))
+
+                inscricao = cursor.fetchone()
+
+                if inscricao:
+                    flash('Você já está inscrito nesta aula.', 'erro')
+
+                else:
+                    # Conta quantos alunos estão inscritos
+                    cursor.execute("""
+                        SELECT COUNT(*)
+                        FROM AGENDAMENTO
+                        WHERE ID_AULA = ?
+                    """, (id_aula,))
+
+                    quantidade = cursor.fetchone()[0]
+
+                    if quantidade >= aula[0]:
+                        flash('Esta aula está esgotada.', 'erro')
+
+                    else:
+                        cursor.execute("""
+                            INSERT INTO AGENDAMENTO
+                            (ID_USUARIO, ID_AULA, DATA_AGENDAMENTO)
+                            VALUES (?, ?, CURRENT_TIMESTAMP)
+                        """, (id_usuario, id_aula))
+
+                        con.commit()
+
+                        flash('Você está inscrito na aula!', 'sucesso')
+
+            return redirect(url_for('grade_aulas_aluno'))
+
+        # Busca todas as aulas cadastradas
+        cursor.execute("""
+            SELECT
+                A.ID_AULA,
+                M.NOME,
+                U.NOME,
+                A.CAPACIDADE,
+                D.DIA_SEMANA,
+                D.HORA_INICIO,
+                D.HORA_FIM,
+
+                (SELECT COUNT(*)
+                 FROM AGENDAMENTO AG
+                 WHERE AG.ID_AULA = A.ID_AULA) AS INSCRITOS,
+
+                (SELECT COUNT(*)
+                 FROM AGENDAMENTO AG
+                 WHERE AG.ID_AULA = A.ID_AULA
+                 AND AG.ID_USUARIO = ?) AS MINHA_INSCRICAO
+
+            FROM AULA A
+
+            INNER JOIN MODALIDADE M
+                ON A.ID_MODALIDADE = M.ID_MODALIDADE
+
+            INNER JOIN USUARIO U
+                ON A.ID_USUARIO = U.ID_USUARIO
+
+            LEFT JOIN DIA_SEMANA D
+                ON A.ID_AULA = D.ID_AULA
+
+            ORDER BY D.DIA_SEMANA, D.HORA_INICIO
+        """, (id_usuario,))
+
+        aulas = cursor.fetchall()
+
+
+        dias_semana = {
+            '1': 'Segunda-feira',
+            '2': 'Terça-feira',
+            '3': 'Quarta-feira',
+            '4': 'Quinta-feira',
+            '5': 'Sexta-feira',
+            '6': 'Sábado',
+            '7': 'Domingo'
+        }
+
         return render_template(
-            'grade_de_aulas.html',
-            aulas=aulas_corrigidas,
+            'grade_aulas_aluno.html',
+            aulas=aulas,
             dias_semana=dias_semana
         )
 
     except Exception as erro:
         con.rollback()
-        print('Erro ao carregar grade de aulas:', erro)
 
-        flash('Não foi possível carregar a grade de aulas.','erro')
+        print('ERRO COMPLETO NA GRADE DO ALUNO:')
+        print(erro)
 
-        return redirect(url_for('dashboard_admin'))
+        flash('Não foi possível carregar as aulas.', 'erro')
+        return redirect(url_for('index'))
 
     finally:
         cursor.close()
+
+
+# Inscrever aluno em uma aula
+@app.route('/agendar_aula/<int:id_aula>', methods=['POST'])
+def agendar_aula(id_aula):
+
+    if 'id_usuario' not in session:
+        return redirect(url_for('login'))
+
+    cursor = con.cursor()
+
+    try:
+        id_usuario = session['id_usuario']
+
+        # Verifica se é aluno
+        if session['perfil'] != 3:
+            flash('Somente alunos podem se inscrever.', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        # Verifica se a aula existe e busca sua capacidade
+        cursor.execute("""
+            SELECT CAPACIDADE
+            FROM AULA
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        aula = cursor.fetchone()
+
+        if not aula:
+            flash('Aula não encontrada.', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        capacidade = aula[0]
+
+        # Verifica se o aluno já está inscrito
+        cursor.execute("""
+            SELECT ID_AGENDAMENTO
+            FROM AGENDAMENTO
+            WHERE ID_USUARIO = ?
+              AND ID_AULA = ?
+        """, (id_usuario, id_aula))
+
+        inscricao = cursor.fetchone()
+
+        if inscricao:
+            flash('Você já está inscrito nesta aula!', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        # Conta quantos alunos estão inscritos
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM AGENDAMENTO
+            WHERE ID_AULA = ?
+        """, (id_aula,))
+
+        total_inscritos = cursor.fetchone()[0]
+
+        # Verifica se a aula está lotada
+        if total_inscritos >= capacidade:
+            flash('Esta aula está esgotada!', 'erro')
+            return redirect(url_for('grade_de_aulas'))
+
+        # Realiza a inscrição
+        cursor.execute("""
+            INSERT INTO AGENDAMENTO
+                (ID_USUARIO, ID_AULA, DATA_AGENDAMENTO)
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+        """, (id_usuario, id_aula))
+
+        con.commit()
+
+        flash('Você está inscrito na aula com sucesso!', 'sucesso')
+
+    except Exception as erro:
+        con.rollback()
+        print('Erro ao realizar inscrição:', erro)
+
+        flash('Não foi possível realizar sua inscrição.', 'erro')
+
+    finally:
+        cursor.close()
+
+    return redirect(url_for('grade_de_aulas'))
 
 
 

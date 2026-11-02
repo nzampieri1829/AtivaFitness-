@@ -1,0 +1,273 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --verde-principal: #238636;
+    --verde-escuro: #17652A;
+    --verde-claro: #0acb52;
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-medio: #808080;
+    --cinza-escuro: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cinza-claro);
+    color: var(--cinza-escuro);
+    min-height: 100vh;
+}
+
+/* MENU LATERAL */
+
+.menu-lateral {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--verde-escuro);
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.logo {
+    width: 125px;
+    margin: 0 auto 35px;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+.menu-lateral nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: var(--branco);
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.item-menu img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+}
+
+.item-menu:hover,
+.item-menu.ativo {
+    background-color: var(--verde-principal);
+    border-color: var(--verde-claro);
+}
+
+.sair {
+    margin-top: auto;
+}
+
+/* CONTEÚDO */
+
+.conteudo-principal {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    padding: 35px;
+}
+
+.cabecalho-pagina h1 {
+    color: var(--verde-escuro);
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.descricao-pagina {
+    color: var(--cinza-medio);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* TABELA */
+
+.tabela-container {
+    width: 100%;
+    margin-top: 25px;
+    overflow-x: auto;
+    background-color: var(--branco);
+    border: 1px solid #DDDDDD;
+    border-radius: 9px;
+}
+
+table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 16px 14px;
+    text-align: left;
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #E1F5E5;
+    color: var(--verde-escuro);
+    font-weight: 700;
+}
+
+tbody tr:hover {
+    background-color: #F8FCF8;
+}
+
+.sem-aulas {
+    padding: 35px;
+    text-align: center;
+    color: var(--cinza-medio);
+}
+
+/* BOTÃO DE INSCRIÇÃO */
+
+.botao-inscrever {
+    padding: 9px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--verde-principal);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.botao-inscrever:hover {
+    background-color: var(--verde-escuro);
+}
+
+/* SITUAÇÕES */
+
+.inscrito {
+    color: var(--verde-escuro);
+    background-color: #E1F5E5;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.esgotada {
+    color: #B71C1C;
+    background-color: #FFEBEE;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* MENSAGENS */
+
+.mensagem {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.sucesso {
+    background-color: #E1F5E5;
+    color: var(--verde-escuro);
+}
+
+.erro {
+    background-color: #FFEBEE;
+    color: #B71C1C;
+}
+
+/* VOLTAR */
+
+.voltar-container {
+    margin-top: 25px;
+}
+
+.botao-voltar {
+    display: inline-flex;
+    padding: 11px 17px;
+    border: 1px solid #80AA8B;
+    border-radius: 7px;
+    background-color: white;
+    color: var(--verde-escuro);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 1000px) {
+
+    .menu-lateral {
+        width: 220px;
+    }
+
+    .conteudo-principal {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        padding: 25px 18px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .menu-lateral {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 18px;
+    }
+
+    .logo {
+        width: 100px;
+        margin: 0 auto 18px;
+    }
+
+    .menu-lateral nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .item-menu {
+        flex: 1;
+        justify-content: center;
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+
+    .conteudo-principal {
+        margin-left: 0;
+        width: 100%;
+        padding: 22px 14px;
+    }
+
+    .cabecalho-pagina h1 {
+        font-size: 23px;
+    }
+}

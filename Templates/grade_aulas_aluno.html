@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grade de Aulas - ATIVA Fitness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/grade_aulas_aluno.css') }}">
+</head>
+
+<body>
+
+    <aside class="menu-lateral">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logobranca.png') }}"
+                 alt="Logo ATIVA Fitness">
+        </div>
+
+        <nav>
+            <a href="{{ url_for('index') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_home.png') }}"
+                     alt="">
+                Início
+            </a>
+
+            <a href="{{ url_for('grade_aulas_aluno') }}"
+               class="item-menu ativo">
+                <img src="{{ url_for('static', filename='img/icone_grade.png') }}"
+                     alt="">
+                Grade de Aulas
+            </a>
+
+            <a href="{{ url_for('editar_perfil') }}" class="item-menu">
+                <img src="{{ url_for('static', filename='img/icone_perfil.png') }}"
+                     alt="">
+                Perfil
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="item-menu sair">
+                <img src="{{ url_for('static', filename='img/icone_sair.png') }}"
+                     alt="">
+                Sair
+            </a>
+        </nav>
+
+    </aside>
+
+    <main class="conteudo-principal">
+
+        <div class="cabecalho-pagina">
+            <div>
+                <h1>Grade de Aulas</h1>
+
+                <p class="descricao-pagina">
+                    Confira as aulas disponíveis e faça sua inscrição.
+                </p>
+            </div>
+        </div>
+
+        <!-- MENSAGENS -->
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% if mensagens %}
+                {% for categoria, mensagem in mensagens %}
+                    <p class="mensagem {{ categoria }}">{{ mensagem }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- TABELA DE AULAS -->
+        <div class="tabela-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Modalidade</th>
+                        <th>Professor</th>
+                        <th>Dia da semana</th>
+                        <th>Início</th>
+                        <th>Término</th>
+                        <th>Vagas disponíveis</th>
+                        <th>Inscrição</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for aula in aulas %}
+
+                    <tr>
+
+                        <td>{{ aula[1] }}</td>
+                        <td>{{ aula[2] }}</td>
+
+                        <td>
+                            {{ dias_semana.get(aula[4], 'Não informado') }}
+                        </td>
+
+                        <td>{{ aula[5] }}</td>
+                        <td>{{ aula[6] }}</td>
+
+                        <td>
+                            {{ aula[3] - aula[7] }}
+                        </td>
+
+                        <td>
+
+                            {% if aula[8] > 0 %}
+
+                                <span class="inscrito">
+                                    Inscrito
+                                </span>
+
+                            {% elif aula[7] >= aula[3] %}
+
+                                <span class="esgotada">
+                                    Esgotada
+                                </span>
+
+                            {% else %}
+
+                                <form method="POST"
+                                      action="{{ url_for('grade_aulas_aluno') }}">
+
+                                    <input type="hidden"
+                                           name="id_aula"
+                                           value="{{ aula[0] }}">
+
+                                    <button type="submit"
+                                            class="botao-inscrever">
+                                        Agendar aula
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="7" class="sem-aulas">
+                            Nenhuma aula cadastrada.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="voltar-container">
+            <a href="{{ url_for('index') }}" class="botao-voltar">
+                Voltar ao início
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>
