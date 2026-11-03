@@ -1,24 +1,24 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 
-/* Biblioteca de cores */
+/* CORES */
 :root {
-    /* Cores principais */
     --verde-principal: #238636;
     --verde-escuro: #17652A;
     --verde-claro: #0acb52;
 
-    /* Cores neutras */
     --branco: #FFFFFF;
     --cinza-claro: #F5F5F5;
     --cinza-medio: #808080;
     --cinza-escuro: #333333;
+    --cinza-texto: #333333;
     --preto: #111111;
 
-    /* Cores de mensagens */
     --sucesso: #2E7D32;
     --erro: #D32F2F;
 }
 
+/* CONFIGURAÇÕES GERAIS */
 * {
     margin: 0;
     padding: 0;
@@ -94,7 +94,6 @@ body {
 }
 
 /* CONTEÚDO */
-
 .conteudo {
     min-height: 100vh;
     margin-left: 205px;
@@ -106,7 +105,6 @@ body {
 }
 
 /* CARTÃO DO PERFIL */
-
 .cartao-perfil {
     position: relative;
     width: 1200px;
@@ -115,7 +113,7 @@ body {
     border: 1px solid #888888;
     border-radius: 7px;
     margin-left: 70px;
-    height: 550px;
+    min-height: 550px;
     margin-top: 75px;
 }
 
@@ -125,9 +123,37 @@ body {
     font-weight: 700;
 }
 
+/* FOTO DE PERFIL */
+.foto-perfil {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.foto-perfil img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--verde-principal);
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.foto-perfil label {
+    display: block;
+    color: var(--verde-escuro);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.foto-perfil input {
+    font-size: 12px;
+    max-width: 230px;
+}
 
 /* CAMPOS DO FORMULÁRIO */
-
 .campo {
     display: flex;
     flex-direction: column;
@@ -154,14 +180,11 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-
-
 .campo input::placeholder {
     color: #888888;
 }
 
 /* BOTÃO */
-
 .cartao-perfil button {
     display: block;
     width: 48%;
@@ -182,7 +205,6 @@ body {
 }
 
 /* MENSAGENS */
-
 .mensagem {
     margin: -15px 0 18px;
     font-size: 12px;
@@ -196,12 +218,12 @@ body {
     color: var(--erro);
 }
 
-/* MENU INFERIOR: CELULARES */
-
+/* MENU INFERIOR */
 .menu-inferior {
     display: none;
 }
 
+/* CELULARES */
 @media (max-width: 600px) {
 
     body {
@@ -254,6 +276,24 @@ body {
         font-size: 17px;
     }
 
+    .foto-perfil {
+        margin-bottom: 20px;
+    }
+
+    .foto-perfil img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .foto-perfil label {
+        font-size: 11px;
+    }
+
+    .foto-perfil input {
+        font-size: 10px;
+        max-width: 210px;
+    }
+
     .campo {
         margin-bottom: 20px;
     }
@@ -288,8 +328,9 @@ body {
         height: 22px;
         object-fit: contain;
     }
+}
 
-
+/* CELULARES PEQUENOS */
 @media (max-width: 320px) {
 
     .cartao-perfil {

@@ -302,20 +302,61 @@ def login():
     return render_template('login.html')
 
 
+
 # Início / Dashboard
 @app.route('/inicio')
 def index():
-
-    # Verificar se o usuário está logado
     if 'id_usuario' not in session:
         return redirect(url_for('login'))
 
-    # Pegar o nome do usuário
     nome = session['usuario_nome']
+    id_usuario = session['id_usuario']
 
-    return render_template('dashboard.html', nome=nome)
+    cursor = con.cursor()
+
+    try:
+        # Conta as aulas em que o aluno está inscrito
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM AGENDAMENTO
+            WHERE ID_USUARIO = ?
+        """, (id_usuario,))
+
+        minhas_aulas = cursor.fetchone()[0]
 
 
+        # Conta todas as aulas cadastradas pelo administrador
+        cursor.execute("""
+                       SELECT COUNT(DISTINCT A.ID_AULA)
+                       FROM AULA A
+
+                                INNER JOIN MODALIDADE M
+                                           ON A.ID_MODALIDADE = M.ID_MODALIDADE
+
+                                INNER JOIN USUARIO U
+                                           ON A.ID_USUARIO = U.ID_USUARIO
+
+                                LEFT JOIN DIA_SEMANA D
+                                          ON A.ID_AULA = D.ID_AULA
+                       """)
+
+        aulas_disponiveis = cursor.fetchone()[0]
+        print("TOTAL DE AULAS NO DASHBOARD:", aulas_disponiveis)
+
+        return render_template(
+            'dashboard.html',
+            nome=nome,
+            minhas_aulas=minhas_aulas,
+            aulas_disponiveis=aulas_disponiveis
+        )
+
+    except Exception as erro:
+        print('Erro ao carregar dashboard:', erro)
+        flash('Não foi possível carregar o dashboard.', 'erro')
+        return redirect(url_for('login'))
+
+    finally:
+        cursor.close()
 
 # Editar perfil
 @app.route('/editar_perfil', methods=['GET', 'POST'])
@@ -326,7 +367,6 @@ def editar_perfil():
         return redirect(url_for('login'))
 
     id_usuario = session['id_usuario']
-
     perfil = session['perfil']
 
     if perfil == 1:
@@ -344,6 +384,9 @@ def editar_perfil():
         email = request.form.get('email', '').strip()
         senha = request.form.get('senha', '')
         senha2 = request.form.get('senha2', '')
+
+        # Recebe a foto enviada
+        foto = request.files.get('foto')
 
         try:
             # Verifica se nome e e-mail foram preenchidos
@@ -449,6 +492,18 @@ def editar_perfil():
                 WHERE id_usuario = ?
             """, (nome, email, id_usuario))
 
+            # Salva a foto de perfil, caso tenha sido escolhida
+            if foto and foto.filename != '':
+                nome_foto = 'perfil_' + str(id_usuario) + '.jpg'
+
+                foto.save('static/img/perfis/' + nome_foto)
+
+                cursor.execute("""
+                    UPDATE USUARIO
+                    SET FOTO_PERFIL = ?
+                    WHERE ID_USUARIO = ?
+                """, ('img/perfis/' + nome_foto, id_usuario))
+
             # Salva as alterações no banco
             con.commit()
 
@@ -475,34 +530,31 @@ def editar_perfil():
             cursor.close()
 
     # Busca os dados atuais do usuário
-    # Busca os dados atuais do usuário
-
-
     try:
         cursor.execute("""
-                       SELECT nome, email
-                       FROM USUARIO
-                       WHERE id_usuario = ?
-                       """, (id_usuario,))
+            SELECT nome, email, FOTO_PERFIL
+            FROM USUARIO
+            WHERE id_usuario = ?
+        """, (id_usuario,))
 
         usuario = cursor.fetchone()
 
     finally:
         cursor.close()
 
-        # Verifica se encontrou o usuário
+    # Verifica se encontrou o usuário
     if not usuario:
         flash('Usuário não encontrado.', 'erro')
         return redirect(url_for('login'))
 
-        # Abre a página de perfil
+    # Abre a página de perfil
     return render_template(
         'editar_perfil.html',
         nome=usuario[0],
         email=usuario[1],
+        foto_perfil=usuario[2],
         pagina_inicio=pagina_inicio
     )
-
 # Logout
 @app.route('/logout')
 def logout():
@@ -1272,6 +1324,7 @@ def grade_de_aulas():
         cursor.close()
 
 
+
 # Grade de aulas do aluno
 @app.route('/grade_aulas_aluno', methods=['GET', 'POST'])
 def grade_aulas_aluno():
@@ -1292,15 +1345,47 @@ def grade_aulas_aluno():
 
         usuario = cursor.fetchone()
 
+
         if not usuario or usuario[0] != 2:
             flash('Acesso permitido somente ao aluno.', 'erro')
             return redirect(url_for('index'))
 
-        # Inscrição em uma aula
+        # Verifica se o formulário foi enviado
         if request.method == 'POST':
 
             id_aula = request.form.get('id_aula')
+            acao = request.form.get('acao', 'agendar')
 
+            # Cancelar agendamento
+            if acao == 'cancelar':
+
+                cursor.execute("""
+                    SELECT ID_AGENDAMENTO
+                    FROM AGENDAMENTO
+                    WHERE ID_USUARIO = ?
+                    AND ID_AULA = ?
+                """, (id_usuario, id_aula))
+
+                inscricao = cursor.fetchone()
+
+                if inscricao:
+
+                    cursor.execute("""
+                        DELETE FROM AGENDAMENTO
+                        WHERE ID_USUARIO = ?
+                        AND ID_AULA = ?
+                    """, (id_usuario, id_aula))
+
+                    con.commit()
+
+                    flash('Agendamento cancelado com sucesso!', 'sucesso')
+
+                else:
+                    flash('Você não está inscrito nesta aula.', 'erro')
+
+                return redirect(url_for('grade_aulas_aluno'))
+
+            # Realizar inscrição
             cursor.execute("""
                 SELECT CAPACIDADE
                 FROM AULA
@@ -1313,7 +1398,7 @@ def grade_aulas_aluno():
                 flash('Aula não encontrada.', 'erro')
 
             else:
-                # Verifica se o aluno já está inscrito
+                # Verifica se já está inscrito
                 cursor.execute("""
                     SELECT ID_AGENDAMENTO
                     FROM AGENDAMENTO
@@ -1327,7 +1412,7 @@ def grade_aulas_aluno():
                     flash('Você já está inscrito nesta aula.', 'erro')
 
                 else:
-                    # Conta quantos alunos estão inscritos
+                    # Conta os alunos inscritos
                     cursor.execute("""
                         SELECT COUNT(*)
                         FROM AGENDAMENTO
@@ -1387,7 +1472,6 @@ def grade_aulas_aluno():
         """, (id_usuario,))
 
         aulas = cursor.fetchall()
-
 
         dias_semana = {
             '1': 'Segunda-feira',

@@ -115,6 +115,25 @@
                                     Inscrito
                                 </span>
 
+                                <!-- CANCELAR AGENDAMENTO -->
+                                <form method="POST"
+                                      action="{{ url_for('grade_aulas_aluno') }}">
+
+                                    <input type="hidden"
+                                           name="id_aula"
+                                           value="{{ aula[0] }}">
+
+                                    <input type="hidden"
+                                           name="acao"
+                                           value="cancelar">
+
+                                    <button type="submit"
+                                            class="botao-cancelar">
+                                        Cancelar agendamento
+                                    </button>
+
+                                </form>
+
                             {% elif aula[7] >= aula[3] %}
 
                                 <span class="esgotada">
@@ -123,12 +142,17 @@
 
                             {% else %}
 
+                                <!-- AGENDAR AULA -->
                                 <form method="POST"
                                       action="{{ url_for('grade_aulas_aluno') }}">
 
                                     <input type="hidden"
                                            name="id_aula"
                                            value="{{ aula[0] }}">
+
+                                    <input type="hidden"
+                                           name="acao"
+                                           value="agendar">
 
                                     <button type="submit"
                                             class="botao-inscrever">
